@@ -33,6 +33,8 @@ def intersection_filler(
     side,
     bar_position,
     fill_height,
+    draw_top=True,
+    draw_bottom=True,
 ):
     hits = rounded_rect_intersect_x(
         outer_left,
@@ -46,21 +48,23 @@ def intersection_filler(
 
     if len(hits) >= 2:
         bottom, top = hits[0], hits[-1]
-        fill_intersection(
-            pen,
-            stroke=stroke,
-            direction="bottom",
-            side=side,
-            x=bottom[0],
-            y=bottom[1],
-            fill_height=fill_height,
-        )
-        fill_intersection(
-            pen,
-            stroke=stroke,
-            direction="top",
-            side=side,
-            x=top[0],
-            y=top[1],
-            fill_height=fill_height,
-        )
+        if draw_bottom:
+            fill_intersection(
+                pen,
+                stroke=stroke,
+                direction="bottom",
+                side=side,
+                x=bottom[0],
+                y=bottom[1],
+                fill_height=fill_height,
+            )
+        if draw_top:
+            fill_intersection(
+                pen,
+                stroke=stroke,
+                direction="top",
+                side=side,
+                x=top[0],
+                y=top[1],
+                fill_height=fill_height,
+            )

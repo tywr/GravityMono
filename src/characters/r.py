@@ -1,34 +1,50 @@
-import pathops
-from fontTools.pens.recordingPen import RecordingPen
-
 from config import FontConfig
-from characters.n import draw_n
+from shapes.rounded_half_loop import rounded_half_loop_tapered
+from shapes.rect import rect
+from shapes.intersection_filler import intersection_filler
 
 
 def draw_r(pen, font_config: FontConfig, stroke: int):
-    """Draw an 'r' by removing the right side of an 'n' below a threshold.
+    """Draw an 'r' with a top half tapered loop and a left stem."""
+    outer_left = FontConfig.WIDTH / 2 - FontConfig.X_WIDTH / 2 - stroke / 2
+    outer_right = FontConfig.WIDTH / 2 + FontConfig.X_WIDTH / 2 + stroke / 2
 
-    Args:
-        right_cut: fraction of x-height below which the right side is removed.
-                   0.3 means everything below 30% of x-height on the right is cut.
-    """
-    rec_n = RecordingPen()
-    draw_n(rec_n, font_config=font_config, stroke=stroke)
+    max_xo = (outer_right - outer_left) / 2
+    max_yo = FontConfig.X_HEIGHT / 2
+    x_offset = min(FontConfig.X_OFFSET, max_xo)
+    y_offset = min(FontConfig.Y_OFFSET, max_yo)
+    bar_right = outer_left + stroke
 
-    n_path = pathops.Path()
-    rec_n.replay(n_path.getPen())
+    # Top half loop tapered on the left (where the stem is)
+    rounded_half_loop_tapered(
+        pen,
+        x1=outer_left,
+        y1=0,
+        x2=outer_right,
+        y2=FontConfig.X_HEIGHT,
+        x_offset=x_offset,
+        y_offset=y_offset,
+        x_offset_taper=FontConfig.X_OFFSET_TAPER,
+        y_offset_taper=FontConfig.Y_OFFSET_TAPER,
+        stroke=stroke,
+        ratio_taper=FontConfig.RATIO_TAPER,
+        direction="left",
+        half="top",
+        stroke_left=stroke,
+    )
+    intersection_filler(
+        pen=pen,
+        stroke=stroke,
+        outer_left=outer_left + stroke * FontConfig.RATIO_TAPER,
+        outer_right=outer_right,
+        height=FontConfig.X_HEIGHT,
+        x_offset=x_offset,
+        y_offset=y_offset,
+        side="left",
+        bar_position=bar_right,
+        fill_height=FontConfig.INTERSECTION_FILL_HEIGHT,
+        draw_bottom=False,
+    )
 
-    # Cut rectangle: right half, from below baseline to right_cut * x-height
-    cut_y = FontConfig.R_CUT * FontConfig.X_HEIGHT
-    mid_x = FontConfig.WIDTH / 2
-
-    cut = pathops.Path()
-    cut_pen = cut.getPen()
-    cut_pen.moveTo((mid_x, -50))
-    cut_pen.lineTo((mid_x, cut_y))
-    cut_pen.lineTo((FontConfig.WIDTH + 50, cut_y))
-    cut_pen.lineTo((FontConfig.WIDTH + 50, -50))
-    cut_pen.closePath()
-
-    result = pathops.op(n_path, cut, pathops.PathOp.DIFFERENCE, fix_winding=True)
-    result.draw(pen)
+    # Left vertical bar
+    rect(pen, outer_left, 0, bar_right, FontConfig.X_HEIGHT)
