@@ -1,5 +1,7 @@
 from config import FontConfig
 from shapes.rounded_rect import rounded_rect
+from shapes.rect import rect
+from shapes.intersect import rounded_rect_intersect_x
 
 
 def draw_o(
@@ -80,3 +82,35 @@ def draw_o(
         corner_v=inner_corner_v,
         clockwise=True,
     )
+
+    # Ink trap squares at tapered side junctions
+    # The square sticks out from the curve at the intersection point,
+    # extending away from the loop (toward the stem side).
+    ink = FontConfig.INK_TRAP
+    if taper == "left" and ink > 0:
+        full_left = inner_left - stroke
+        hits = rounded_rect_intersect_x(
+            outer_left, 0, outer_right, height,
+            outer_corner_h, outer_corner_v, inner_left,
+        )
+        if len(hits) >= 2:
+            _, y_bottom = hits[0]
+            _, y_top = hits[-1]
+            # Bottom: square below and left of the curve
+            rect(pen, inner_left, y_bottom - ink, inner_left + ink, y_bottom)
+            # Top: square above and left of the curve
+            rect(pen, inner_left, y_top, inner_left + ink, y_top + ink)
+
+    elif taper == "right" and ink > 0:
+        full_right = inner_right + stroke
+        hits = rounded_rect_intersect_x(
+            outer_left, 0, outer_right, height,
+            outer_corner_h, outer_corner_v, inner_right,
+        )
+        if len(hits) >= 2:
+            _, y_bottom = hits[0]
+            _, y_top = hits[-1]
+            # Bottom: square below and right of the curve
+            rect(pen, inner_right - ink, y_bottom - ink, inner_right, y_bottom)
+            # Top: square above and right of the curve
+            rect(pen, inner_right - ink, y_top, inner_right, y_top + ink)

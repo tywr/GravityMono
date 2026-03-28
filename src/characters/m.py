@@ -63,8 +63,6 @@ def draw_m(pen, font_config: FontConfig, stroke: int):
         font_config=font_config,
         stroke=stroke,
         center_x=right_center,
-        taper="left",
-        taper_ratio=1,
         x_ratio=0.5,
     )
 

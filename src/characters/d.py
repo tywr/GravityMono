@@ -34,6 +34,4 @@ def draw_d(pen, font_config: FontConfig, stroke: int):
 
     # Boolean union: o + bar
     result = pathops.op(o_path, bar, pathops.PathOp.UNION, fix_winding=True)
-
-    # Replay the clean result into the real pen
     result.draw(pen)

@@ -18,7 +18,8 @@ class FontConfig:
     CUT_ANGLE = 70
 
     # Taper ratio for most letters
-    TAPER_RATIO = 0.3
+    TAPER_RATIO = 0.2
+    INK_TRAP = 10
 
     # Radius for the flat hooks (g, y, f etc.)
     HOOK_RADIUS = 200
