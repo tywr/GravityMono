@@ -3,7 +3,7 @@ from fontTools.pens.recordingPen import RecordingPen
 
 from config import FontConfig
 from characters.o import draw_o
-from shapes import flat_hook
+from shapes.flat_hook import flat_hook
 
 
 def draw_a(pen, font_config: FontConfig, stroke: int):

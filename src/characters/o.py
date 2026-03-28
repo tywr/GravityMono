@@ -1,5 +1,5 @@
 from config import FontConfig
-from shapes import rounded_rect
+from shapes.rounded_rect import rounded_rect
 
 
 def draw_o(

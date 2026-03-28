@@ -5,10 +5,14 @@ from fontTools.pens.ttGlyphPen import TTGlyphPen
 
 from config import FontConfig
 from characters.o import draw_o
-from characters.c import draw_c
+from characters.a import draw_a
 from characters.b import draw_b
+from characters.c import draw_c
 from characters.d import draw_d
+from characters.e import draw_e
 from characters.g import draw_g
+from characters.i import draw_i
+from characters.l import draw_l
 from characters.p import draw_p
 from characters.h import draw_h
 from characters.m import draw_m
@@ -17,8 +21,6 @@ from characters.q import draw_q
 from characters.r import draw_r
 from characters.u import draw_u
 from characters.y import draw_y
-from characters.e import draw_e
-from characters.a import draw_a
 
 
 def draw_notdef(pen):
@@ -32,12 +34,51 @@ def draw_notdef(pen):
 
 def build_font(output_path="OrbitonMono.ttf"):
     fb = FontBuilder(FontConfig.UNITS_PER_EM, isTTF=True)
-    fb.setupGlyphOrder([".notdef", "space", "a", "o", "c", "b", "d", "e", "g", "h", "m", "n", "p", "q", "r", "u", "y"])
-    fb.setupCharacterMap({
-        32: "space", 97: "a", 111: "o", 99: "c",
-        98: "b", 100: "d", 101: "e", 103: "g", 104: "h", 109: "m", 110: "n", 112: "p", 113: "q",
-        114: "r", 117: "u", 121: "y",
-    })
+    fb.setupGlyphOrder(
+        [
+            ".notdef",
+            "space",
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "h",
+            "i",
+            "l",
+            "o",
+            "g",
+            "m",
+            "n",
+            "p",
+            "q",
+            "r",
+            "u",
+            "y",
+        ]
+    )
+    fb.setupCharacterMap(
+        {
+            32: "space",
+            97: "a",
+            108: "l",
+            111: "o",
+            99: "c",
+            98: "b",
+            100: "d",
+            101: "e",
+            103: "g",
+            104: "h",
+            105: "i",
+            109: "m",
+            110: "n",
+            112: "p",
+            113: "q",
+            114: "r",
+            117: "u",
+            121: "y",
+        }
+    )
 
     notdef_pen = TTGlyphPen(None)
     draw_notdef(notdef_pen)
@@ -46,6 +87,9 @@ def build_font(output_path="OrbitonMono.ttf"):
 
     a_pen = TTGlyphPen(None)
     draw_a(a_pen, font_config=FontConfig, stroke=60)
+
+    l_pen = TTGlyphPen(None)
+    draw_l(l_pen, font_config=FontConfig, stroke=60)
 
     o_pen = TTGlyphPen(None)
     draw_o(o_pen, font_config=FontConfig, stroke=60)
@@ -64,6 +108,9 @@ def build_font(output_path="OrbitonMono.ttf"):
 
     g_pen = TTGlyphPen(None)
     draw_g(g_pen, font_config=FontConfig, stroke=60)
+
+    i_pen = TTGlyphPen(None)
+    draw_i(i_pen, font_config=FontConfig, stroke=60)
 
     p_pen = TTGlyphPen(None)
     draw_p(p_pen, font_config=FontConfig, stroke=60)
@@ -94,6 +141,8 @@ def build_font(output_path="OrbitonMono.ttf"):
             ".notdef": notdef_pen.glyph(),
             "space": space_pen.glyph(),
             "a": a_pen.glyph(),
+            "l": l_pen.glyph(),
+            "i": i_pen.glyph(),
             "o": o_pen.glyph(),
             "c": c_pen.glyph(),
             "b": b_pen.glyph(),
@@ -130,7 +179,11 @@ def build_font(output_path="OrbitonMono.ttf"):
             "styleName": "Regular",
         }
     )
-    fb.setupOS2(sTypoAscender=FontConfig.ASCENT, sTypoDescender=FontConfig.DESCENT, sTypoLineGap=0)
+    fb.setupOS2(
+        sTypoAscender=FontConfig.ASCENT,
+        sTypoDescender=FontConfig.DESCENT,
+        sTypoLineGap=0,
+    )
     fb.setupPost()
 
     fb.font.save(output_path)
