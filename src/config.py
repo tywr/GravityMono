@@ -10,7 +10,7 @@ class FontConfig:
     x_height = 500
     accent = 605
 
-    tooth = 120
+    tooth = 100
 
 
     # o character

@@ -3,7 +3,7 @@ from shapes.superellipse_ear import draw_superellipse_ear
 from shapes.rect import draw_rect
 
 
-def draw_d(
+def draw_b(
     pen,
     stroke: int,
     taper=None,
@@ -26,6 +26,6 @@ def draw_d(
         fc.o_hx,
         fc.o_hy,
         fc.tooth,
-        side="right",
+        side="left",
     )
-    draw_rect(pen, x2 - stroke, 0, x2, fc.ascent)
+    draw_rect(pen, x1, 0, stroke, fc.x_height)
