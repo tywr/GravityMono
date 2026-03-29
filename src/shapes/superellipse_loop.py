@@ -10,8 +10,9 @@ def draw_superellipse_loop(
     y2,
     hx,
     hy,
+    cut=None,
 ):
-    draw_superellipse(pen, x1, y1, x2, y2, hx, hy, clockwise=False)
+    draw_superellipse(pen, x1, y1, x2, y2, hx, hy, clockwise=False, cut=cut)
 
     w = (x2 - x1) / 2
     h = (y2 - y1) / 2
@@ -27,4 +28,5 @@ def draw_superellipse_loop(
         inner_hx,
         inner_hy,
         clockwise=True,
+        cut=cut,
     )

@@ -13,18 +13,19 @@ class FontConfig:
     tooth = 100
     cover = 20
 
-    # o character
     o_width = 320
     o_hx = 175
     o_hy = 175
 
-    # a character
     a_loop_ratio = 0.6
     a_hx = 125
     a_hy = 125
 
-    # c character
     c_opening = 0.5
+
+    f_offset = -20
+    f_len_left = 120
+    f_len_right = 180
 
     m_width = 400
 
