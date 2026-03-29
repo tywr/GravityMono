@@ -19,6 +19,7 @@ class FontConfig:
     o_hy = 175
 
     # a character
+    a_loop_ratio = 0.6
     a_hx = 125
     a_hy = 125
 

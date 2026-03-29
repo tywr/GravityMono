@@ -1,16 +1,18 @@
 def draw_superellipse(
     pen,
-    x1, y1,
-    x2, y2,
-    hx, hy,
+    x1,
+    y1,
+    x2,
+    y2,
+    hx,
+    hy,
     clockwise=False,
+    cut=None,
 ):
     """
     Draw a superellipse whose anchors sit at the midpoint of each bounding side.
-    Shape is controlled purely by hx/hy handle tension:
-        hx=hy=0          → diamond
-        hx=hy small      → Eurostile squared look
-        hx ~ half-width  → rectangle (handles reach the corners)
+
+    Starting the drawing on the right side of the drawing.
 
     Args:
         x1, y1: bottom-left corner of the bounding box.
@@ -22,51 +24,55 @@ def draw_superellipse(
     mid_x = (x1 + x2) / 2
     mid_y = (y1 + y2) / 2
 
-    if not clockwise:
-        # CCW: bottom → right → top → left
-        pen.moveTo((mid_x, y1))
-        pen.curveTo(            # bottom-right
-            (mid_x + hx, y1),
-            (x2, mid_y - hy),
-            (x2, mid_y),
-        )
-        pen.curveTo(            # top-right
-            (x2, mid_y + hy),
-            (mid_x + hx, y2),
-            (mid_x, y2),
-        )
-        pen.curveTo(            # top-left
-            (mid_x - hx, y2),
-            (x1, mid_y + hy),
-            (x1, mid_y),
-        )
-        pen.curveTo(            # bottom-left
-            (x1, mid_y - hy),
-            (mid_x - hx, y1),
-            (mid_x, y1),
-        )
+    if clockwise:
+        if cut != "top":
+            pen.moveTo((x1, mid_y))
+            pen.curveTo(  # top-left
+                (x1, mid_y + hy),
+                (mid_x - hx, y2),
+                (mid_x, y2),
+            )
+            pen.curveTo(  # top-right
+                (mid_x + hx, y2),
+                (x2, mid_y + hy),
+                (x2, mid_y),
+            )
+        if cut != "bottom":
+            pen.moveTo((x2, mid_y))
+            pen.curveTo(  # bottom-right
+                (x2, mid_y - hy),
+                (mid_x + hx, y1),
+                (mid_x, y1),
+            )
+            pen.curveTo(  # bottom-left
+                (mid_x - hx, y1),
+                (x1, mid_y - hy),
+                (x1, mid_y),
+            )
     else:
-        # CW: bottom → left → top → right
-        pen.moveTo((mid_x, y1))
-        pen.curveTo(            # bottom-left
-            (mid_x - hx, y1),
-            (x1, mid_y - hy),
-            (x1, mid_y),
-        )
-        pen.curveTo(            # top-left
-            (x1, mid_y + hy),
-            (mid_x - hx, y2),
-            (mid_x, y2),
-        )
-        pen.curveTo(            # top-right
-            (mid_x + hx, y2),
-            (x2, mid_y + hy),
-            (x2, mid_y),
-        )
-        pen.curveTo(            # bottom-right
-            (x2, mid_y - hy),
-            (mid_x + hx, y1),
-            (mid_x, y1),
-        )
+        if cut != "top":
+            pen.moveTo((x2, mid_y))
+            pen.curveTo(  # top-right
+                (x2, mid_y + hy),
+                (mid_x + hx, y2),
+                (mid_x, y2),
+            )
+            pen.curveTo(  # top-left
+                (mid_x - hx, y2),
+                (x1, mid_y + hy),
+                (x1, mid_y),
+            )
+        if cut != "bottom":
+            pen.moveTo((x1, mid_y))
+            pen.curveTo(  # bottom-left
+                (x1, mid_y - hy),
+                (mid_x - hx, y1),
+                (mid_x, y1),
+            )
+            pen.curveTo(  # bottom-right
+                (mid_x + hx, y1),
+                (x2, mid_y - hy),
+                (x2, mid_y),
+            )
 
     pen.closePath()

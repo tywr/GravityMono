@@ -4,6 +4,7 @@ from fontTools.fontBuilder import FontBuilder
 from fontTools.pens.t2CharStringPen import T2CharStringPen
 
 from config import FontConfig as fc
+from glyphs.letters.a import draw_a
 from glyphs.letters.o import draw_o
 from glyphs.letters.b import draw_b
 from glyphs.letters.c import draw_c
@@ -27,10 +28,11 @@ def record_glyph(draw_fn):
 
 
 def build_font(output_path="OrbitonMono.otf"):
-    glyph_names = [".notdef", "space", "b", "c", "d", "o"]
+    glyph_names = [".notdef", "space", "a", "b", "c", "d", "o"]
 
     cmap = {
         0x20: "space",
+        0x61: "a",
         0x62: "b",
         0x63: "c",
         0x64: "d",
@@ -46,6 +48,7 @@ def build_font(output_path="OrbitonMono.otf"):
     charstrings = {
         ".notdef": notdef_pen.getCharString(),
         "space": space_pen.getCharString(),
+        "a": record_glyph(draw_a),
         "b": record_glyph(draw_b),
         "c": record_glyph(draw_c),
         "d": record_glyph(draw_d),
