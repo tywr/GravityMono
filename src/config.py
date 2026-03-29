@@ -8,8 +8,9 @@ class FontConfig:
     WIDTH = 500
     BAR_HEIGHT = 475
     X_HEIGHT = 500
-    X_WIDTH = 320
     ACCENT = 605
+    X_WIDTH = 320
+    X_WIDTH_LARGE = 400
 
     X_OFFSET = 100
     Y_OFFSET = 150
@@ -24,7 +25,6 @@ class FontConfig:
 
     # Angle for slanted cuts (in degrees)
     CUT_ANGLE = 70
-
 
     # Control point offsets for flat hooks (g, y, f etc.)
     HOOK_X_OFFSET = 200
@@ -61,6 +61,7 @@ class FontConfig:
 
     # Length of the m letter middle tail (percentage of x-height)
     M_CUT_RATIO = 0.4
+    M_X_OFFSET_TAPER = 45
 
     # Cut of the R-letter (percentage of x-height)
     R_CUT = 0.7

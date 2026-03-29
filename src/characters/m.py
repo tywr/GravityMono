@@ -1,8 +1,9 @@
-import pathops
-from fontTools.pens.recordingPen import RecordingPen
+from shapes.rounded_half_loop import rounded_half_loop_tapered
+from shapes.rounded_half_loop import rounded_half_loop
+from shapes.rect import rect
+from shapes.intersection_filler import intersection_filler
 
 from config import FontConfig
-from characters.o import draw_o
 
 
 def draw_m(pen, font_config: FontConfig, stroke: int):
@@ -12,78 +13,72 @@ def draw_m(pen, font_config: FontConfig, stroke: int):
     Right arch: non-tapered o, bottom cut, with a short right descender.
     The two arches share a middle stem via pathops union.
     """
-    cut_y = FontConfig.M_CUT_RATIO * FontConfig.X_HEIGHT
-    outer_left = FontConfig.WIDTH / 2 - FontConfig.X_WIDTH / 2 - stroke / 2
-    outer_right = FontConfig.WIDTH / 2 + FontConfig.X_WIDTH / 2 + stroke / 2
-    mid_x = FontConfig.WIDTH / 2
+    outer_left = FontConfig.WIDTH / 2 - FontConfig.X_WIDTH_LARGE / 2 - stroke / 2
+    outer_right = FontConfig.WIDTH / 2 + FontConfig.X_WIDTH_LARGE / 2 + stroke / 2
 
-    # --- Left arch: tapered o centered on left half ---
-    left_center = (outer_left + mid_x + stroke / 2) / 2
-    rec_left = RecordingPen()
-    draw_o(
-        rec_left,
-        font_config=font_config,
+    max_xo = (outer_right - outer_left) / 8
+    max_yo = FontConfig.X_HEIGHT / 2
+    x_offset = min(FontConfig.X_OFFSET, max_xo)
+    y_offset = min(FontConfig.Y_OFFSET, max_yo)
+    bar_right = outer_left + stroke
+
+    rounded_half_loop_tapered(
+        pen,
+        x1=outer_left,
+        y1=0,
+        x2=FontConfig.WIDTH / 2 + stroke / 2,
+        y2=FontConfig.X_HEIGHT,
+        x_offset=x_offset,
+        y_offset=y_offset,
+        x_offset_taper=45,
+        y_offset_taper=y_offset,
         stroke=stroke,
-        taper="left",
-        taper_ratio=FontConfig.TAPER_RATIO,
-        center_x=left_center,
-        x_ratio=0.5,
+        ratio_taper=FontConfig.RATIO_TAPER,
+        direction="left",
+        half="top",
     )
-
-    left_path = pathops.Path()
-    rec_left.replay(left_path.getPen())
-
-    # Cut bottom half
-    cut = pathops.Path()
-    cp = cut.getPen()
-    cp.moveTo((-50, -50))
-    cp.lineTo((-50, cut_y))
-    cp.lineTo((FontConfig.WIDTH + 50, cut_y))
-    cp.lineTo((FontConfig.WIDTH + 50, -50))
-    cp.closePath()
-
-    left_arch = pathops.op(left_path, cut, pathops.PathOp.DIFFERENCE, fix_winding=True)
-
-    # Left vertical bar: baseline to x-height
-    left_bar = pathops.Path()
-    lp = left_bar.getPen()
-    lp.moveTo((outer_left, 0))
-    lp.lineTo((outer_left, FontConfig.X_HEIGHT))
-    lp.lineTo((outer_left + stroke, FontConfig.X_HEIGHT))
-    lp.lineTo((outer_left + stroke, 0))
-    lp.closePath()
-
-    result = pathops.op(left_arch, left_bar, pathops.PathOp.UNION, fix_winding=True)
-
-    # --- Right arch: non-tapered o centered on right half ---
-    right_center = (mid_x + outer_right - stroke / 2) / 2
-    rec_right = RecordingPen()
-    draw_o(
-        rec_right,
-        font_config=font_config,
+    intersection_filler(
+        pen=pen,
         stroke=stroke,
-        center_x=right_center,
-        x_ratio=0.5,
+        outer_left=outer_left + stroke * FontConfig.RATIO_TAPER,
+        outer_right=FontConfig.WIDTH / 2 + 1.2 * stroke,
+        height=FontConfig.X_HEIGHT,
+        x_offset=x_offset,
+        y_offset=y_offset,
+        side="left",
+        bar_position=bar_right,
+        fill_height=FontConfig.INTERSECTION_FILL_HEIGHT,
+        draw_bottom=False,
     )
-
-    right_path = pathops.Path()
-    rec_right.replay(right_path.getPen())
-
-    right_arch = pathops.op(
-        right_path, cut, pathops.PathOp.DIFFERENCE, fix_winding=True
+    rounded_half_loop(
+        pen,
+        x1=FontConfig.WIDTH / 2 - stroke / 2,
+        y1=0,
+        x2=outer_right,
+        y2=FontConfig.X_HEIGHT,
+        x_offset=x_offset,
+        y_offset=y_offset,
+        stroke=stroke,
+        half="top",
     )
-
-    result = pathops.op(result, right_arch, pathops.PathOp.UNION, fix_winding=True)
-
-    # Right vertical bar: baseline to cut point (short right leg)
-    right_bar = pathops.Path()
-    rp = right_bar.getPen()
-    rp.moveTo((outer_right - stroke, 0))
-    rp.lineTo((outer_right - stroke, cut_y))
-    rp.lineTo((outer_right, cut_y))
-    rp.lineTo((outer_right, 0))
-    rp.closePath()
-
-    result = pathops.op(result, right_bar, pathops.PathOp.UNION, fix_winding=True)
-
-    result.draw(pen)
+    rect(
+        pen,
+        outer_left,
+        0,
+        bar_right,
+        FontConfig.X_HEIGHT,
+    )
+    rect(
+        pen,
+        outer_right - stroke,
+        0,
+        outer_right,
+        FontConfig.X_HEIGHT / 2,
+    )
+    rect(
+        pen,
+        FontConfig.WIDTH / 2 - stroke / 2,
+        FontConfig.X_HEIGHT * FontConfig.M_CUT_RATIO,
+        FontConfig.WIDTH / 2 + stroke / 2,
+        FontConfig.X_HEIGHT / 2,
+    )
