@@ -7,13 +7,21 @@ def draw_j(
     pen,
     stroke: int,
 ):
-    xmid = fc.width / 2 + fc.j_offset
+    offset = 100
+    len_left = 160
+    corner_width = 150
+    hx = 150
+    hy = 150
+    dot_width = 43
+    len_cap = 140
+
+    xmid = fc.width / 2 + offset
     # Stem
     draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
     # Left cap
     draw_rect(
         pen,
-        xmid - fc.i_len_cap - stroke / 2,
+        xmid - len_cap - stroke / 2,
         fc.x_height - stroke,
         xmid,
         fc.x_height,
@@ -24,26 +32,26 @@ def draw_j(
         stroke,
         xmid + stroke / 2,
         0,
-        xmid - fc.j_corner_width,
+        xmid - corner_width,
         fc.descent + fc.tail_offset,
-        fc.j_hx,
-        fc.j_hy,
+        hx,
+        hy,
         orientation="bottom-left",
     )
     # Extension after the corner to the left
-    if fc.j_len_left > fc.j_corner_width:
+    if len_left > corner_width:
         draw_rect(
             pen,
-            xmid - fc.j_len_left - stroke / 2,
+            xmid - len_left - stroke / 2,
             fc.descent + fc.tail_offset,
-            xmid - fc.j_corner_width,
+            xmid - corner_width,
             fc.descent + fc.tail_offset + stroke,
         )
-    # Accent dot 
+    # Accent dot
     draw_rect(
         pen,
-        xmid - fc.i_dot_width - stroke / 2,
-        fc.accent - fc.i_dot_width / 2 - stroke / 2,
+        xmid - dot_width - stroke / 2,
+        fc.accent - dot_width / 2 - stroke / 2,
         xmid + stroke / 2,
-        fc.accent + stroke / 2 + fc.i_dot_width / 2,
+        fc.accent + stroke / 2 + dot_width / 2,
     )

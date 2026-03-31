@@ -7,9 +7,15 @@ def draw_m(
     pen,
     stroke: int,
 ):
-    x1 = fc.width / 2 - fc.m_width / 2 - stroke / 2 + fc.n_offset
+    offset = 0
+    width = 400
+    hx = 150
+    hy = 150
+    mid_len = 0.6
+
+    x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
     y1 = -fc.overshoot
-    x2 = fc.width / 2 + fc.m_width / 2 + stroke / 2 + fc.n_offset
+    x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
     y2 = fc.x_height + fc.overshoot
     xmid = x1 + (x2 - x1) / 2
 
@@ -21,8 +27,8 @@ def draw_m(
         y1,
         xmid + stroke / 2,
         y2,
-        fc.m_hx,
-        fc.m_hy,
+        hx,
+        hy,
         fc.tooth,
         fc.cover,
         side="left",
@@ -36,8 +42,8 @@ def draw_m(
         y1,
         x2,
         y2,
-        fc.m_hx,
-        fc.m_hy - stroke / 2,
+        hx,
+        hy - stroke / 2,
         fc.tooth,
         fc.cover,
         side="left",
@@ -48,4 +54,4 @@ def draw_m(
     # Right foot
     draw_rect(pen, x2 - stroke, 0, x2, (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot)
     # Middle extension
-    draw_rect(pen, xmid - stroke /2, (1 - fc.m_mid_len) * fc.x_height - stroke / 2, xmid + stroke / 2, fc.x_height / 2)
+    draw_rect(pen, xmid - stroke /2, (1 - mid_len) * fc.x_height - stroke / 2, xmid + stroke / 2, fc.x_height / 2)

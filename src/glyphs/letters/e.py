@@ -8,15 +8,20 @@ def draw_e(
     pen,
     stroke: int,
 ):
-    x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2 + fc.e_offset
+    offset = 0
+    width = 320
+    hx = 200
+    hy = 230
+
+    x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
     y1 = -fc.overshoot
-    x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2 + fc.e_offset
+    x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
     y2 = fc.x_height + fc.overshoot
     ymid = y1 + (y2 - y1) / 2
     xmid = x1 + (x2 - x1) / 2
 
     # Half-top of a superellipse
-    draw_superellipse_loop(pen, stroke, x1, y1, x2, y2, fc.o_hx, fc.o_hy, cut="bottom")
+    draw_superellipse_loop(pen, stroke, x1, y1, x2, y2, hx, hy, cut="bottom")
     # Corner from mid-left to bottom
     draw_corner(
         pen,
@@ -25,8 +30,8 @@ def draw_e(
         (fc.x_height + 2 * fc.overshoot) / 2 + fc.overshoot,
         xmid,
         0,
-        fc.o_hx,
-        fc.o_hy,
+        hx,
+        hy,
         orientation="bottom-right",
     )
     # Extension

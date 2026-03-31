@@ -9,24 +9,30 @@ def draw_c(
     pen,
     stroke: int,
 ):
-    x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2 + fc.c_offset
+    offset = 0
+    width = 320
+    hx = 200
+    hy = 230
+    opening = 0.5
+
+    x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
     y1 = -fc.overshoot
-    x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2 + fc.c_offset
+    x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
     y2 = fc.x_height + fc.overshoot
     xmid = x1 + (x2 - x1) / 2
 
     loop_glyph = ufoLib2.objects.Glyph()
     draw_superellipse_loop(
-        loop_glyph.getPen(), stroke, x1, y1, x2, y2, fc.o_hx, fc.o_hy
+        loop_glyph.getPen(), stroke, x1, y1, x2, y2, hx, hy
     )
 
     cut_glyph = ufoLib2.objects.Glyph()
     draw_rect(
         cut_glyph.getPen(),
         xmid,
-        fc.x_height * (1 - fc.c_opening) / 2,
+        fc.x_height * (1 - opening) / 2,
         xmid + fc.width / 2,
-        fc.x_height * (1 + fc.c_opening) / 2,
+        fc.x_height * (1 + opening) / 2,
     )
 
     result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))

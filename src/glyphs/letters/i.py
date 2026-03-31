@@ -6,21 +6,27 @@ def draw_i(
     pen,
     stroke: int,
 ):
-    xmid = fc.width / 2 + fc.i_offset
+    offset = 10
+    len_left = 150
+    len_right = 160
+    dot_width = 43
+    len_cap = 140
+
+    xmid = fc.width / 2 + offset
     # Stem
     draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
     # Footer
     draw_rect(
         pen,
-        xmid - fc.i_len_left - stroke / 2,
+        xmid - len_left - stroke / 2,
         0,
-        xmid + fc.i_len_right + stroke / 2,
+        xmid + len_right + stroke / 2,
         stroke,
     )
     # Left cap
     draw_rect(
         pen,
-        xmid - fc.i_len_cap - stroke / 2,
+        xmid - len_cap - stroke / 2,
         fc.x_height - stroke,
         xmid,
         fc.x_height,
@@ -28,8 +34,8 @@ def draw_i(
     # Accent dot
     draw_rect(
         pen,
-        xmid - fc.i_dot_width - stroke / 2,
-        fc.accent - fc.i_dot_width / 2 - stroke / 2,
+        xmid - dot_width - stroke / 2,
+        fc.accent - dot_width / 2 - stroke / 2,
         xmid + stroke / 2,
-        fc.accent + stroke / 2 + fc.i_dot_width / 2,
+        fc.accent + stroke / 2 + dot_width / 2,
     )

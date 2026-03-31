@@ -7,15 +7,22 @@ def draw_f(
     pen,
     stroke: int,
 ):
-    xmid = fc.width / 2 + fc.f_offset
+    offset = -25
+    len_left = 120
+    len_right = 180
+    corner_width = 150
+    hx = 150
+    hy = 150
+
+    xmid = fc.width / 2 + offset
     # Stem
     draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
     # Cross-bar
     draw_rect(
         pen,
-        xmid - fc.f_len_left - stroke / 2,
+        xmid - len_left - stroke / 2,
         fc.bar_height - stroke,
-        xmid + fc.f_len_right + stroke / 2,
+        xmid + len_right + stroke / 2,
         fc.bar_height,
     )
     # Corner
@@ -24,18 +31,18 @@ def draw_f(
         stroke,
         xmid - stroke / 2,
         fc.x_height,
-        xmid + fc.f_corner_width,
+        xmid + corner_width,
         fc.ascent,
-        fc.f_hx,
-        fc.f_hy,
+        hx,
+        hy,
         orientation="top-right",
     )
     # Extension after the corner to the right
-    if fc.f_len_right > fc.f_corner_width:
+    if len_right > corner_width:
         draw_rect(
             pen,
-            xmid + fc.f_corner_width,
+            xmid + corner_width,
             fc.ascent - stroke,
-            xmid + fc.f_len_right + stroke / 2,
+            xmid + len_right + stroke / 2,
             fc.ascent,
         )

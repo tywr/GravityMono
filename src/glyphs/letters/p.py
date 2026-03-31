@@ -3,7 +3,7 @@ from shapes.superellipse_ear import draw_superellipse_ear
 from shapes.rect import draw_rect
 
 
-def draw_b(
+def draw_p(
     pen,
     stroke: int,
 ):
@@ -16,6 +16,8 @@ def draw_b(
     y1 = -fc.overshoot
     x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
     y2 = fc.x_height + fc.overshoot
+
+    # Left-ear
     draw_superellipse_ear(
         pen,
         stroke,
@@ -29,4 +31,5 @@ def draw_b(
         fc.cover,
         side="left",
     )
-    draw_rect(pen, x1, 0, x1 + stroke, fc.ascent)
+    # Descender
+    draw_rect(pen, x1, fc.descent, x1 + stroke, fc.x_height)

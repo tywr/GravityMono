@@ -8,17 +8,22 @@ def draw_k(
     pen,
     stroke: int,
 ):
-    x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2 + fc.k_offset
+    offset = 0
+    bowl_width = 320
+    neck_len = 100
+    width = 300
+
+    x1 = fc.width / 2 - bowl_width / 2 - stroke / 2 + offset
     y1 = 0
-    x2 = x1 + fc.k_width + stroke / 2
+    x2 = x1 + width + stroke / 2
     y2 = fc.x_height
 
     # Angle of each branch
-    a = fc.k_width - fc.k_neck_len
+    a = width - neck_len
     b = fc.x_height / 2
     theta = atan(b / a)
     delta = stroke / sin(theta)
-    x_neck = x1 + fc.k_neck_len + stroke - delta / 2
+    x_neck = x1 + neck_len + stroke - delta / 2
 
 
     # Left ascender line
