@@ -29,6 +29,7 @@ def draw_a(
         cut="top"
     )
     draw_rect(pen, x2 - stroke, 0, x2, fc.x_height / 2)
+    # Curve to the cap
     draw_corner(
         pen,
         stroke,
@@ -40,6 +41,8 @@ def draw_a(
         fc.o_hy,
         orientation="top-left",
     )
+    # Cap
+    draw_rect(pen, x1 + stroke / 4, fc.x_height - stroke, xmid, fc.x_height)
     draw_corner(
         pen,
         stroke,
@@ -51,5 +54,4 @@ def draw_a(
         fc.a_hy,
         orientation="top-right",
     )
-    draw_rect(pen, x1 + stroke / 2, fc.x_height - stroke, xmid, fc.x_height)
     draw_rect(pen, xmid, fc.x_height * fc.a_loop_ratio - stroke, x2 - stroke, fc.x_height * fc.a_loop_ratio)

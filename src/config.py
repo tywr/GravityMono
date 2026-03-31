@@ -16,7 +16,7 @@ class FontConfig:
     tail_offset = 20
 
 
-    a_offset = 100
+    a_offset = 0
     a_loop_ratio = 0.6
     a_hx = 135
     a_hy = 150

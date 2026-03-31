@@ -52,21 +52,28 @@ def plot_control_points(ax, recording):
                     "-", color="#e74c3c", linewidth=0.5, alpha=0.5, zorder=4)
 
 
-def visualize(family, glyph, show_controls=False, stroke=STROKE):
+COLORS = ["#222222", "#e74c3c", "#3498db", "#2ecc71", "#e67e22", "#9b59b6", "#1abc9c"]
+
+
+def visualize(family, glyph, show_controls=False, strokes=None):
+    if strokes is None:
+        strokes = [STROKE]
+
     mod = importlib.import_module(f"glyphs.{family}.{glyph}")
     draw_fn = getattr(mod, f"draw_{glyph}")
 
-    rec = RecordingPen()
-    draw_fn(rec, stroke=stroke)
-
     fig, ax = plt.subplots(1, 1, figsize=(6, 8))
 
-    path = recording_to_mpl_path(rec)
-    patch = mpatches.PathPatch(path, facecolor="#222222", edgecolor="none")
-    ax.add_patch(patch)
+    for i, stroke in enumerate(sorted(strokes, reverse=True)):
+        rec = RecordingPen()
+        draw_fn(rec, stroke=stroke)
+        path = recording_to_mpl_path(rec)
+        color = COLORS[i % len(COLORS)]
+        patch = mpatches.PathPatch(path, facecolor=color, edgecolor="none", alpha=0.7)
+        ax.add_patch(patch)
 
-    if show_controls:
-        plot_control_points(ax, rec)
+        if show_controls:
+            plot_control_points(ax, rec)
 
     # draw guides
     for y, label, color in [
@@ -98,6 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("family", help="Glyph family (e.g. base, letters)")
     parser.add_argument("glyph", help="Glyph name (e.g. d, superellipse_ear)")
     parser.add_argument("-c", action="store_true", help="Show bezier control points")
-    parser.add_argument("-s", type=int, default=60, help="Stroke width (default: 60)")
+    parser.add_argument("-s", type=str, default="60", help="Stroke width(s), comma-separated (e.g. 100,60,80)")
     args = parser.parse_args()
-    visualize(args.family, args.glyph, show_controls=args.c, stroke=args.s)
+    strokes = [int(s) for s in args.s.split(",")]
+    visualize(args.family, args.glyph, show_controls=args.c, strokes=strokes)
