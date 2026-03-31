@@ -30,14 +30,13 @@ class LowercaseSGlyph(Glyph):
         # Upper arch
         draw_superellipse_loop(pen, stroke, x1, ymid, x2, y2, hx, hy, cut="bottom")
         # Upper middle corner
-        draw_corner(
+        draw_cross_curve(
             pen,
             stroke,
             x1,
+            y1 + (y2 - y1) / 4,
+            x2,
             y1 + 3 * (y2 - y1) / 4,
-            xmid,
-            ymid - stroke / 2,
             hx / 2,
             hy,
-            orientation="bottom-right",
         )
