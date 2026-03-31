@@ -39,4 +39,5 @@ class LowercaseSGlyph(Glyph):
             y1 + 3 * (y2 - y1) / 4,
             hx / 2,
             hy,
+            invert=True
         )

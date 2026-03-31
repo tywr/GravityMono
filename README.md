@@ -1,3 +1,3 @@
-# Vimpera font
+# Kassiopea font
 
 Stay tuned

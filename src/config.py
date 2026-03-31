@@ -1,5 +1,5 @@
 class FontConfig:
-    family_name = "Vimpera"
+    family_name = "Kassiopea"
 
     units_per_em = 1000
     ascent = 650
