@@ -13,9 +13,9 @@ class LowercaseTGlyph(Glyph):
         pen,
         stroke: int,
     ):
-        offset = -50
-        len_left = 120
-        len_right = 190
+        offset = -40
+        len_left = 140
+        len_right = 220
         corner_width = 180
         corner_height = 250
         hx = 180

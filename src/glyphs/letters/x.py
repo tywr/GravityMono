@@ -1,4 +1,4 @@
-from math import atan, cos
+from math import atan, sin
 from config import FontConfig as fc
 from glyph import Glyph
 from shapes.rect import draw_rect
@@ -15,7 +15,7 @@ class LowercaseXGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = 320
+        width = 350
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = 0
@@ -23,7 +23,7 @@ class LowercaseXGlyph(Glyph):
         y2 = fc.x_height
 
         theta = atan((y2 - y1) / (x2 - x1))
-        delta = stroke / cos(theta)
+        delta = stroke / sin(theta)
 
         draw_polygon(
             pen,

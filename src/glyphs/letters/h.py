@@ -16,7 +16,7 @@ class LowercaseHGlyph(Glyph):
         offset = 24
         width = fc.body_width
         hx = 135
-        hy = 150
+        hy = 120
         loop_ratio = 0.6
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset

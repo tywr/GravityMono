@@ -18,9 +18,10 @@ class LowercaseGGlyph(Glyph):
         width = fc.body_width + fc.h_overshoot
         hx = fc.hx
         hy = fc.hy
-        corner_width = 160
+        corner_width = 220
         corner_hx = 100
-        corner_hy = 115
+        corner_hy = 200
+        tail_len = 460
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = -fc.overshoot

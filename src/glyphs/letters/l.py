@@ -13,9 +13,9 @@ class LowercaseLGlyph(Glyph):
         stroke: int,
     ):
         offset = 20
-        len_left = 120
-        len_right = 120
-        len_cap = 140
+        len_left = 200
+        len_right = 200
+        len_cap = 200
 
         xmid = fc.width / 2 + offset
         # Stem

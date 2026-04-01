@@ -14,9 +14,10 @@ class LowercaseFGlyph(Glyph):
         stroke: int,
     ):
         offset = -28
-        len_left = 120
-        len_right = 180
+        len_left = 140
+        len_right = 240
         corner_width = 150
+        bar_height = 495
         hx = 150
         hy = 150
 
@@ -27,9 +28,9 @@ class LowercaseFGlyph(Glyph):
         draw_rect(
             pen,
             xmid - len_left - stroke / 2,
-            fc.x_height - stroke,
+            bar_height - stroke,
             xmid + len_right + stroke / 2,
-            fc.x_height,
+            bar_height,
         )
         # Corner
         draw_corner(

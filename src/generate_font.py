@@ -17,9 +17,12 @@ STROKE = 70
 
 def discover_glyphs():
     """Recursively import all modules under glyphs/ and return Glyph subclasses."""
+    def on_error(name):
+        raise ImportError(f"Failed to import {name}")
+
     for pkg in [glyphs.letters]:
         for importer, modname, ispkg in pkgutil.walk_packages(
-            pkg.__path__, pkg.__name__ + "."
+            pkg.__path__, pkg.__name__ + ".", onerror=on_error
         ):
             importlib.import_module(modname)
     return [cls() for cls in Glyph.__subclasses__()]
@@ -76,7 +79,7 @@ def build_font(output_path=f"{fc.family_name}.otf"):
         privateDict={},
     )
     fb.setupHorizontalMetrics({name: (fc.width, 0) for name in glyph_names})
-    fb.setupHorizontalHeader(ascent=fc.ascent, descent=fc.descent)
+    fb.setupHorizontalHeader(ascent=fc.window_ascent, descent=-abs(fc.window_descent))
     fb.setupNameTable(
         {
             "familyName": fc.family_name,
@@ -90,9 +93,9 @@ def build_font(output_path=f"{fc.family_name}.otf"):
     fb.setupOS2(
         sTypoAscender=fc.ascent,
         sTypoDescender=fc.descent,
-        sTypoLineGap=0,
-        usWinAscent=fc.ascent,
-        usWinDescent=abs(fc.descent),
+        sTypoLineGap=50,
+        usWinAscent=fc.window_ascent,
+        usWinDescent=abs(fc.window_descent),
         sxHeight=fc.x_height,
         sCapHeight=fc.cap,
         fsType=0,

@@ -13,8 +13,8 @@ class LowercaseIGlyph(Glyph):
         stroke: int,
     ):
         offset = 13
-        len_left = 120
-        len_right = 120
+        len_left = 180
+        len_right = 180
         dot_width = 23
         len_cap = 140
 

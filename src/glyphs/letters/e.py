@@ -17,8 +17,8 @@ class LowercaseEGlyph(Glyph):
         offset = 15
         width = fc.body_width + 2 * fc.h_overshoot
         hx = fc.hx
-        hy = fc.hy + 30
-        len_tail = 310
+        hy = fc.hy
+        len_tail = 340
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = -fc.overshoot

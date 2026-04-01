@@ -19,7 +19,7 @@ class LowercaseVGlyph(Glyph):
         xmid = fc.width / 2 + offset
 
         a = width / 2
-        b = fc.x_height / 2
+        b = fc.x_height
         theta = atan(b / a)
         x_delta = stroke / sin(theta)
         y_delta = stroke / cos(theta)

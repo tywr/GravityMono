@@ -14,8 +14,8 @@ class LowercaseMGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = 400
-        hx = 120
+        width = 440
+        hx = 140
         hy = fc.hy
         mid_len = 0.6
 
@@ -54,7 +54,8 @@ class LowercaseMGlyph(Glyph):
             cut="bottom",
         )
         # Left foot
-        draw_rect(pen, x1, 0, x1 + stroke, fc.x_height)
+        draw_rect(pen, x1, 0, x1 + stroke - fc.gap, fc.x_height)
+        draw_rect(pen, x1, 0, x1 + stroke, fc.x_height - fc.tooth)
         # Right foot
         draw_rect(
             pen, x2 - stroke, 0, x2, (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot
