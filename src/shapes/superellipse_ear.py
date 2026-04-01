@@ -12,6 +12,7 @@ def draw_superellipse_ear(
     hy,
     tooth,
     cover,
+    ehy=30,
     side="right",
     m_junction=None,
     cut=None,
@@ -41,7 +42,7 @@ def draw_superellipse_ear(
         if cut != "bottom":
             # Bottom half: p_bot → outer bottom → outer right mid → inner right mid → inner bottom → closePath
             pen.moveTo(p_bot)
-            pen.curveTo(p_bot, (p_bot[0], y1), (mid_x, y1))
+            pen.curveTo((p_bot[0], p_bot[1] - ehy), (p_bot[0], y1), (mid_x, y1))
             pen.curveTo(
                 (mid_x + ihx + stroke / 2, y1),
                 (x2, mid_y - ihy - stroke / 2),
@@ -65,7 +66,7 @@ def draw_superellipse_ear(
                     (mid_x + ihx + stroke / 2, y2),
                     (mid_x, y2),
                 )
-            pen.curveTo((p_top[0], y2), p_top, p_top)
+            pen.curveTo((p_top[0], y2), (p_top[0], p_top[1] + ehy), p_top)
             pen.lineTo((ix1, imid_y))
             pen.curveTo((ix1, imid_y + ihy), (imid_x - ihx, iy2), (imid_x, iy2))
             pen.curveTo((imid_x + ihx, iy2), (ix2, imid_y + ihy), (ix2, imid_y))
@@ -80,7 +81,7 @@ def draw_superellipse_ear(
         if cut != "top":
             # Top half: p_top → outer top → outer left mid → inner left mid → inner top → closePath
             pen.moveTo(p_top)
-            pen.curveTo(p_top, (p_top[0], y2), (mid_x, y2))
+            pen.curveTo((p_top[0], p_top[1] + ehy), (p_top[0], y2), (mid_x, y2))
             pen.curveTo(
                 (mid_x - ihx - stroke / 2, y2),
                 (x1, mid_y + ihy + stroke / 2),
@@ -99,7 +100,7 @@ def draw_superellipse_ear(
                 (mid_x - ihx - stroke / 2, y1),
                 (mid_x, y1),
             )
-            pen.curveTo((p_bot[0], y1), p_bot, p_bot)
+            pen.curveTo((p_bot[0], y1), (p_bot[0], p_bot[1] - ehy), p_bot)
             pen.lineTo((ix2, imid_y))
             pen.curveTo((ix2, imid_y - ihy), (imid_x + ihx, iy1), (imid_x, iy1))
             pen.curveTo((imid_x - ihx, iy1), (ix1, imid_y - ihy), (ix1, imid_y))

@@ -26,3 +26,6 @@ class FontConfig:
     # Standard hx and hy curve parameters for superellipse
     hx = 180
     hy = 180
+
+    # Curve parameter for ear
+    ehy = 30
