@@ -33,7 +33,6 @@ class LowercaseNGlyph(Glyph):
             hy,
             fc.tooth,
             fc.cover,
-            ehy=fc.ehy,
             side="left",
             cut="bottom",
         )

@@ -80,14 +80,15 @@ def draw_superellipse_ear(
 
     elif side == "right":
         # Junction on right side
-        p_bot = (x2 - stroke, y1 + tooth - stroke / 2)
-        p_top = (x2 - stroke, y2 - tooth + stroke / 2)
+        p_bot = (x2 - stroke - gap, y1 + tooth - stroke / 2)
+        p_top = (x2 - stroke - gap, y2 - tooth + stroke / 2)
         junction_x = x2 - stroke
 
         if cut != "top":
             # Top half: p_top → outer top → outer left mid → inner left mid → inner top → closePath
-            pen.moveTo(p_top)
-            pen.curveTo((p_top[0], p_top[1] + ehy), (p_top[0], y2), (mid_x, y2))
+            pen.moveTo((p_top[0] + gap, p_top[1]))
+            pen.lineTo((p_top[0], p_top[1]))
+            pen.curveTo((p_top[0] - ehx, p_top[1] + ehy), (mid_x + ihx, y2), (mid_x, y2))
             pen.curveTo(
                 (mid_x - ihx - stroke / 2, y2),
                 (x1, mid_y + ihy + stroke / 2),
@@ -96,6 +97,7 @@ def draw_superellipse_ear(
             pen.lineTo((ix1, imid_y))
             pen.curveTo((ix1, imid_y + ihy), (imid_x - ihx, iy2), (imid_x, iy2))
             pen.curveTo((imid_x + ihx, iy2), (ix2, imid_y + ihy), (ix2, imid_y))
+            pen.lineTo((p_top[0] + gap, p_top[1]))
             pen.closePath()
 
         if cut != "bottom":
@@ -106,7 +108,8 @@ def draw_superellipse_ear(
                 (mid_x - ihx - stroke / 2, y1),
                 (mid_x, y1),
             )
-            pen.curveTo((p_bot[0], y1), (p_bot[0], p_bot[1] - ehy), p_bot)
+            pen.curveTo((mid_x + ihx, y1), (p_bot[0] - ehx, p_bot[1] - ehy), p_bot)
+            pen.lineTo((p_bot[0] + gap, p_bot[1]))
             pen.lineTo((ix2, imid_y))
             pen.curveTo((ix2, imid_y - ihy), (imid_x + ihx, iy1), (imid_x, iy1))
             pen.curveTo((imid_x - ihx, iy1), (ix1, imid_y - ihy), (ix1, imid_y))
