@@ -38,10 +38,10 @@ class LowercaseGGlyph(Glyph):
             tooth=fc.tooth + fc.overshoot,
             side="right",
         )
-        draw_rect(pen, x2 - stroke, 0, x2, fc.x_height)
+        draw_rect(pen, x2 - stroke + fc.gap, 0, x2, fc.x_height)
         draw_corner(
             pen,
-            stroke,
+            stroke - fc.gap,
             x2,
             0,
             x2 - corner_width,
@@ -55,5 +55,5 @@ class LowercaseGGlyph(Glyph):
             x1 + stroke / 2,
             fc.descent + fc.tail_offset,
             x2 - corner_width,
-            fc.descent + fc.tail_offset + stroke,
+            fc.descent + fc.tail_offset + stroke - fc.gap,
         )
