@@ -15,7 +15,7 @@ class LowercaseIGlyph(Glyph):
         offset = 13
         len_left = 180
         len_right = 180
-        dot_width = 23
+        dot_width = 40
         len_cap = 140
 
         xmid = fc.width / 2 + offset

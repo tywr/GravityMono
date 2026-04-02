@@ -15,7 +15,7 @@ class LowercaseXGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = 350
+        width = 380
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = 0

@@ -15,9 +15,9 @@ class LowercaseUGlyph(Glyph):
     ):
         offset = 0
         width = fc.body_width
-        hx = 135
-        hy = 120
-        loop_ratio = 0.6
+        hx = fc.a_hx
+        hy = fc.a_hy
+        loop_ratio = fc.a_ratio
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = -fc.overshoot

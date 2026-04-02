@@ -14,8 +14,8 @@ class LowercaseYGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = 345
-        dent_height = 60
+        width = 380
+        dent_height = fc.tooth
 
         xmid = fc.width / 2 + offset
 

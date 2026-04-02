@@ -9,7 +9,7 @@ class FontConfig:
     cap = 730
     width = 600
     x_height = 550
-    accent = 645
+    accent = 710
     overshoot = 10
     h_overshoot = 5
 
@@ -19,8 +19,8 @@ class FontConfig:
 
     # Alternative hx and hy for letters like a, u, n, h
     a_ratio = 0.6
-    a_hx = hx * 0.8
-    a_hy = hy * 0.6
+    a_hx = hx * 0.75
+    a_hy = hy * 0.65
 
     # Depth of tooth
     tooth = 68

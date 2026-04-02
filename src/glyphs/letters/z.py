@@ -15,7 +15,7 @@ class LowercaseZGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = 320
+        width = fc.body_width
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = 0

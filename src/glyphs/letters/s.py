@@ -61,7 +61,7 @@ class LowercaseSGlyph(Glyph):
             y1 + (ym1 - y1) / 2,
             x2,
             y2 - (y2 - ym2) / 2,
-            hx,
-            hy,
+            0.75 * hx,
+            0.75 * hy,
             invert=True,
         )
