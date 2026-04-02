@@ -60,3 +60,38 @@ def find_offset(x1, y1, x2, y2, hx, hy, stroke, tooth):
         return max(hits, key=lambda h: h[1])[1]
 
     return brentq(lambda offset: _intersection_y(offset) - target_y, 0, stroke)
+
+
+def find_offset_horizontal(x1, y1, x2, y2, hx, hy, stroke, tooth):
+    """Find the offset for side='top'/'bottom' arches.
+
+    The outer superellipse is inset by (stroke - offset) on the top.
+    This function solves for the offset value that places the intersection
+    of the outer curve with y = y2 - stroke exactly at x = x2 - tooth.
+    By vertical symmetry the same offset applies to side='bottom'.
+    """
+    iy2 = y2 - stroke
+    target_x = x2 - tooth
+    w = (x2 - x1) / 2
+    h = (y2 - y1) / 2
+
+    def _intersection_x(offset):
+        oy2 = y2 - (stroke - offset)
+        omid_x = (x1 + x2) / 2
+        omid_y = (y1 + oy2) / 2
+        ohx = hx * (w - offset) / w
+        ohy = hy * (h - offset) / h
+
+        # Top-right bezier of the outer superellipse (CCW winding)
+        # Goes from (x2, omid_y) up to (omid_x, oy2)
+        p0 = (x2, omid_y)
+        cp1 = (x2, omid_y + ohy)
+        cp2 = (omid_x + ohx, oy2)
+        p3 = (omid_x, oy2)
+
+        hits = bezier_intersect(p0, cp1, cp2, p3, iy2, axis=1)
+        if not hits:
+            return omid_x
+        return max(hits, key=lambda h: h[1])[1]
+
+    return brentq(lambda offset: _intersection_x(offset) - target_x, 0, stroke)
