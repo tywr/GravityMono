@@ -8,90 +8,85 @@ from shapes.rect import draw_rect
 class LowercaseAGlyph(Glyph):
     name = "lowercase_a"
     unicode = "0x61"
+    offset = 0
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 0
-        width = fc.body_width + fc.h_overshoot
-        loop_ratio = fc.a_ratio
-        hx = fc.a_hx
-        hy = fc.a_hy
-        cap_hx = 200
-        cap_hy = 200
-        len_cap = 235
+    def draw(self, pen, dc):
+        loop_ratio = 0.6
 
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = loop_ratio * (fc.x_height + fc.overshoot)
-        xmid = x1 + (x2 - x1) / 2
+        b = dc.body_boundaries(
+            offset=self.offset,
+            overshoot_bottom=True,
+            overshoot_left=True,
+        )
+        # Add dampening on hx to keep ratio with the dent
+        hx, hy = dc.hx * 0.8, dc.hy * loop_ratio
 
+        # Lower half half of the bowl
         draw_superellipse_arch(
             pen,
-            stroke,
-            x1,
-            y1,
-            x2,
-            y2,
+            dc.stroke,
+            b.x1,
+            b.y1,
+            b.x2,
+            b.y1 + b.height * loop_ratio,
             hx,
             hy,
-            tooth=fc.tooth + fc.overshoot,
+            tooth=dc.dent + dc.v_overshoot,
             side="right",
             cut="top",
         )
-        # Curve to the cap
+        # Upper half of the bowl (corner + bar)
         draw_corner(
             pen,
-            stroke,
-            x2,
-            fc.x_height / 2,
-            xmid,
-            fc.x_height,
-            cap_hx,
-            cap_hy,
-            orientation="top-left",
-        )
-        # Cap
-        draw_rect(
-            pen,
-            xmid - len_cap / 2 - stroke / 2,
-            fc.x_height - stroke,
-            xmid,
-            fc.x_height,
-        )
-        draw_corner(
-            pen,
-            stroke,
-            x1,
-            loop_ratio * (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot,
-            xmid,
-            loop_ratio * fc.x_height,
+            dc.stroke,
+            b.x1,
+            b.y1 + b.height * loop_ratio / 2,
+            b.xmid,
+            b.y1 + b.height * loop_ratio,
             hx,
             hy,
             orientation="top-right",
         )
         draw_rect(
             pen,
-            xmid,
-            fc.x_height * loop_ratio - stroke,
-            x2 - stroke,
-            fc.x_height * loop_ratio,
+            b.xmid,
+            b.y1 + b.height * loop_ratio - dc.stroke,
+            b.x2 - dc.stroke,
+            b.y1 + b.height * loop_ratio,
         )
+        # Curve to the cap
+        draw_corner(
+            pen,
+            dc.stroke,
+            b.x2,
+            fc.x_height / 2,
+            b.xmid,
+            fc.x_height,
+            b.hy,
+            b.hy,
+            orientation="top-left",
+        )
+        # Cap
+        draw_rect(
+            pen,
+            b.x1 + dc.stroke / 2,
+            fc.x_height - dc.stroke,
+            b.xmid,
+            fc.x_height,
+        )
+
         # Stem
         draw_rect(
             pen,
-            x2 - stroke + fc.gap,
+            b.x2 - dc.stroke + dc.gap,
             0,
-            x2,
-            loop_ratio * (fc.x_height + 2 * fc.overshoot) - fc.overshoot,
+            b.x2,
+            loop_ratio * (fc.x_height + 2 * dc.v_overshoot) - dc.v_overshoot,
         )
         draw_rect(
             pen,
-            x2 - stroke,
-            fc.tooth,
-            x2,
-            loop_ratio * (fc.x_height + 2 * fc.overshoot) - fc.overshoot,
+            b.x2 - dc.stroke,
+            dc.dent,
+            b.x2,
+            loop_ratio * (fc.x_height + 2 * dc.v_overshoot) - dc.v_overshoot,
         )

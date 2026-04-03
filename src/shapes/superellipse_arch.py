@@ -15,7 +15,7 @@ def draw_superellipse_arch(
     y2,
     hx,
     hy,
-    tooth=70,
+    dent=70,
     side="right",
     cut=None,
     offset=None,
@@ -25,9 +25,9 @@ def draw_superellipse_arch(
 
     if offset is None:
         if side in ("left", "right"):
-            offset = find_offset(x1, y1, x2, y2, hx, hy, stroke, tooth)
+            offset = find_offset(x1, y1, x2, y2, hx, hy, stroke, dent)
         else:
-            offset = find_offset_horizontal(x1, y1, x2, y2, hx, hy, stroke, tooth)
+            offset = find_offset_horizontal(x1, y1, x2, y2, hx, hy, stroke, dent)
 
     # Outer box
     ox1 = x1 + (stroke - offset if side == "left" else 0)
@@ -85,8 +85,8 @@ def draw_superellipse_arch(
     # # Draw the covers
     # xl = junction_x if side == "left" else junction_x - stroke / 8
     # xr = junction_x if side == "right" else junction_x + stroke / 8
-    # y_low = y1 + tooth - stroke / 2
-    # y_high = y2 - tooth + stroke / 2
+    # y_low = y1 + dent - stroke / 2
+    # y_high = y2 - dent + stroke / 2
     # if cut != "bottom":
     #     draw_rect(pen, xl, y_low - cover, xr, y_low)
     # if cut != "top":

@@ -1,44 +1,68 @@
+from dataclasses import dataclass
+from utils.bounds import Bounds
+
+
+@dataclass
 class FontConfig:
-    family_name = "Kassiopea"
+    family_name: str = "Kassiopea"
 
-    default_stroke = 90
-    units_per_em = 1000
-    window_ascent = 1020
-    window_descent = -300
-    ascent = 730
-    descent = -200
-    cap = 730
-    width = 600
-    x_height = 550
-    accent = 710
-    overshoot = 10
-    h_overshoot = 5
+    units_per_em: int = 1000
+    window_ascent: int = 1020
+    window_descent: int = -300
+    window_width: int = 600
+    ascent: int = 730
+    descent: int = -200
+    cap: int = 730
+    x_height: int = 550
+    accent: int = 710
 
-    # Standard hx and hy curve parameters for superellipse
-    hx = 200
-    hy = 200
 
-    # Alternative hx and hy for letters like a, u, n, h
-    a_ratio = 0.6
-    a_hx = hx * 0.75
-    a_hy = hy * 0.65
+@dataclass
+class DrawConfig(FontConfig):
+    # Default parameters
+    stroke: int = 90
+    width: int = 340
+    hx: int = 200
+    hy: int = 200
+    dent: int = 68
+    gap: int = 5
+    v_overshoot: int = 10
+    h_overshoot: int = 5
 
-    # Alternative radiuses for side angles (B, R etc.)
-    side_hx = 200
-    side_hy = 140
+    def body_boundaries(
+        self,
+        offset: int,
+        overshoot_left=False,
+        overshoot_right=False,
+        overshoot_top=False,
+        overshoot_bottom=False,
+        height="x_height",
+    ):
+        """
+        Abstraction for storing common metrics relative to the body
+        of a character. For most lowercase, the boundaries are
+        a centered rectangle of length `width` and of height `x-height`.
+        For most capital letters, it's a centered rectangle of length
+        `width` of a of height `ascent`.
+        """
+        if height not in ["x_height", "ascent"]:
+            raise ValueError(f"Value {height} should be `x_height` or `ascent`")
+        x1 = self.window_width / 2 - self.width / 2 - self.stroke / 2 + offset
+        y1 = 0
+        x2 = self.window_width / 2 + self.width / 2 + self.stroke / 2 + offset
+        y2 = getattr(self, height)
 
-    # Depth of tooth
-    tooth = 68
+        # Add horizontal overshoots
+        if overshoot_left:
+            x1 -= self.h_overshoot
+        if overshoot_right:
+            x2 += self.h_overshoot
 
-    # Amount of tooth gap coverage
-    gap = 5
-    cover = 10
+        if overshoot_bottom:
+            y1 -= self.v_overshoot
+        if overshoot_top:
+            y2 += self.v_overshoot
 
-    # Y-axis offset of the tail above descender line (g, y)
-    tail_offset = 20
-
-    # Standard width of characters
-    body_width = 340
-
-    # Curve parameter for ear
-    ehy = 30
+        hx = self.hx * (x2 - x1 - self.stroke) / self.width
+        hy = self.hy * (y2 - y1 - self.stroke) / self.x_height
+        return Bounds(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)

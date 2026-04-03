@@ -10,6 +10,7 @@ from fontTools.pens.recordingPen import RecordingPen
 
 sys.path.insert(0, "src")
 from config import FontConfig as fc
+from config import DrawConfig
 from glyph import Glyph
 
 
@@ -136,7 +137,7 @@ def visualize(
 
     for i, stroke in enumerate(sorted(strokes, reverse=True)):
         rec = RecordingPen()
-        draw_fn(rec, stroke=stroke)
+        draw_fn(rec, dc=DrawConfig())
         path = recording_to_mpl_path(rec)
         color = COLORS[i % len(COLORS)]
         patch = mpatches.PathPatch(path, facecolor=color, edgecolor="none", alpha=0.7)
@@ -177,13 +178,13 @@ def visualize(
         (fc.ascent, "ascent", "#9b59b6"),
     ]:
         ax.axhline(y, color=color, linewidth=0.5, linestyle="--", alpha=0.6)
-        ax.text(fc.width + 10, y, label, fontsize=7, color=color, va="center")
+        ax.text(fc.window_width + 10, y, label, fontsize=7, color=color, va="center")
 
     # advance width
     ax.axvline(0, color="#aaa", linewidth=0.5, linestyle=":")
-    ax.axvline(fc.width, color="#aaa", linewidth=0.5, linestyle=":")
+    ax.axvline(fc.window_width, color="#aaa", linewidth=0.5, linestyle=":")
 
-    ax.set_xlim(-50, fc.width + 80)
+    ax.set_xlim(-50, fc.window_width + 80)
     ax.set_ylim(fc.descent - 50, fc.ascent + 50)
     ax.set_aspect("equal")
     ax.set_title(f"'{glyph}'", fontsize=16)

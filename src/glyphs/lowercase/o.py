@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.superellipse_loop import draw_superellipse_loop
 
@@ -6,19 +5,18 @@ from shapes.superellipse_loop import draw_superellipse_loop
 class LowercaseOGlyph(Glyph):
     name = "lowercase_o"
     unicode = "0x6F"
+    offset = 0
 
     def draw(
         self,
         pen,
-        stroke: int,
+        dc,
     ):
-        offset = 0
-        width = fc.body_width + 2 * fc.h_overshoot
-        hx = fc.hx
-        hy = fc.hy
-
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height + fc.overshoot
-        draw_superellipse_loop(pen, stroke, x1, y1, x2, y2, hx, hy)
+        b = dc.body_boundaries(
+            offset=self.offset,
+            overshoot_bottom=True,
+            overshoot_top=True,
+            overshoot_left=True,
+            overshoot_right=True,
+        )
+        draw_superellipse_loop(pen, dc.stroke, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy)

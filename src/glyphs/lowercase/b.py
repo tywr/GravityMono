@@ -7,32 +7,32 @@ from shapes.rect import draw_rect
 class LowercaseBGlyph(Glyph):
     name = "lowercase_b"
     unicode = "0x62"
+    offset = 26
 
     def draw(
         self,
         pen,
-        stroke: int,
+        dc,
     ):
-        offset = 26
-        width = fc.body_width + fc.h_overshoot
-        hx = fc.hx
-        hy = fc.hy
+        b = dc.body_boundaries(
+            offset=self.offset,
+            overshoot_bottom=True,
+            overshoot_top=True,
+            overshoot_right=True,
+        )
 
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height + fc.overshoot
+        print(b)
         draw_superellipse_arch(
             pen,
-            stroke,
-            x1,
-            y1,
-            x2,
-            y2,
-            hx,
-            hy,
-            tooth=fc.tooth + fc.overshoot,
+            dc.stroke,
+            b.x1,
+            b.y1,
+            b.x2,
+            b.y2,
+            b.hx,
+            b.hy,
+            dent=dc.dent + dc.v_overshoot,
             side="left",
         )
-        draw_rect(pen, x1, 0, x1 + stroke - fc.gap, fc.ascent)
-        draw_rect(pen, x1, fc.tooth, x1 + stroke, fc.x_height - fc.tooth)
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke - dc.gap, dc.ascent)
+        draw_rect(pen, b.x1, dc.dent, b.x1 + dc.stroke, dc.x_height - dc.dent)

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from config import FontConfig as fc
 
 
 class Glyph(ABC):
@@ -10,5 +11,9 @@ class Glyph(ABC):
     @abstractmethod
     def unicode(self) -> str: ...
 
+    @property
     @abstractmethod
-    def draw(self, pen, stroke: int) -> None: ...
+    def offset(self) -> int: ...
+
+    @abstractmethod
+    def draw(self, pen, dc) -> None: ...
