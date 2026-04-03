@@ -1,45 +1,37 @@
 from math import atan, sin
-from config import FontConfig as fc
 from glyph import Glyph
-from shapes.rect import draw_rect
 from shapes.polygon import draw_polygon
 
 
 class LowercaseXGlyph(Glyph):
     name = "lowercase_x"
     unicode = "0x78"
+    offset = 0
+    width_ratio = 380 / 340
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 0
-        width = 380
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
 
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = 0
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height
+        theta = atan(dc.x_height / b.width)
+        delta = dc.stroke / sin(theta)
 
-        theta = atan((y2 - y1) / (x2 - x1))
-        delta = stroke / sin(theta)
-
+        # Forward diagonal (bottom-left to top-right)
         draw_polygon(
             pen,
             points=[
-                (x1, y1),
-                (x1 + delta, y1),
-                (x2, y2),
-                (x2 - delta, y2),
+                (b.x1, 0),
+                (b.x1 + delta, 0),
+                (b.x2, dc.x_height),
+                (b.x2 - delta, dc.x_height),
             ],
         )
+        # Backward diagonal (bottom-right to top-left)
         draw_polygon(
             pen,
             points=[
-                (x2 - delta, y1),
-                (x2, y1),
-                (x1 + delta, y2),
-                (x1, y2),
+                (b.x2 - delta, 0),
+                (b.x2, 0),
+                (b.x1 + delta, dc.x_height),
+                (b.x1, dc.x_height),
             ],
         )

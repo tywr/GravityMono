@@ -1,5 +1,4 @@
 from math import atan, cos, sin
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.polygon import draw_polygon
 
@@ -7,44 +6,38 @@ from shapes.polygon import draw_polygon
 class LowercaseYGlyph(Glyph):
     name = "lowercase_y"
     unicode = "0x79"
+    offset = 0
+    width_ratio = 380 / 340
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 0
-        width = 380
-        dent_height = fc.tooth
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
+        half_width = b.width / 2 - dc.stroke / 2
 
-        xmid = fc.width / 2 + offset
+        branch_h = dc.x_height / 2
+        theta = atan(branch_h / half_width)
+        x_delta = dc.stroke / sin(theta)
+        y_delta = dc.stroke / cos(theta)
 
-        a = width / 2
-        b = fc.x_height / 2
-        theta = atan(b / a)
-        x_delta = stroke / sin(theta)
-        y_delta = stroke / cos(theta)
-
-        x_delta_desc = -fc.descent * (width / 2) / fc.x_height
-
-        x_delta_dent = dent_height * (width / 2) / fc.x_height
+        # Horizontal projection of the tail and dent offsets
+        x_delta_desc = -dc.descent * half_width / dc.x_height
+        x_delta_dent = dc.dent * half_width / dc.x_height
 
         draw_polygon(
             pen,
             points=[
-                # Starting from left side of the tail
-                (xmid - x_delta / 2 - x_delta_desc, fc.descent),
-                (xmid + x_delta / 2 - x_delta_desc, fc.descent),
-                # Top-right
-                (xmid + width / 2 + x_delta / 2, fc.x_height),
-                (xmid + width / 2 - x_delta / 2, fc.x_height),
-                # Inner middle-part
-                (xmid, y_delta),
-                # Top-left
-                (xmid - width / 2 + x_delta / 2, fc.x_height),
-                (xmid - width / 2 - x_delta / 2, fc.x_height),
-                # Dent
-                (xmid - x_delta / 2 - x_delta_dent, dent_height),
-                (xmid - x_delta / 2 + x_delta_dent, dent_height),
+                # Tail at descender
+                (b.xmid - x_delta / 2 - x_delta_desc, dc.descent),
+                (b.xmid + x_delta / 2 - x_delta_desc, dc.descent),
+                # Top-right branch
+                (b.xmid + half_width + x_delta / 2, dc.x_height),
+                (b.xmid + half_width - x_delta / 2, dc.x_height),
+                # Inner junction
+                (b.xmid, y_delta),
+                # Top-left branch
+                (b.xmid - half_width + x_delta / 2, dc.x_height),
+                (b.xmid - half_width - x_delta / 2, dc.x_height),
+                # Dent on left stem
+                (b.xmid - x_delta / 2 - x_delta_dent, dc.dent),
+                (b.xmid - x_delta / 2 + x_delta_dent, dc.dent),
             ],
         )
