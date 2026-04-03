@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.superellipse_arch import draw_superellipse_arch
 from shapes.rect import draw_rect
@@ -8,57 +7,54 @@ from shapes.corner import draw_corner
 class LowercaseGGlyph(Glyph):
     name = "lowercase_g"
     unicode = "0x67"
+    offset = 15
+    corner_width = 220
+    corner_hx = 100
+    corner_hy = 200
+    tail_offset = 20  # Y-axis offset of the tail above the descender line
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 15
-        width = fc.body_width + fc.h_overshoot
-        hx = fc.hx
-        hy = fc.hy
-        corner_width = 220
-        corner_hx = 100
-        corner_hy = 200
-        tail_len = 460
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            overshoot_bottom=True,
+            overshoot_top=True,
+            overshoot_left=True,
+        )
 
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height + fc.overshoot
-        # Bowl
+        # Bowl (open on the right, mirrored from b)
         draw_superellipse_arch(
             pen,
-            stroke,
-            x1,
-            y1,
-            x2,
-            y2,
-            hx,
-            hy,
-            tooth=fc.tooth + fc.overshoot,
+            dc.stroke,
+            b.x1,
+            b.y1,
+            b.x2,
+            b.y2,
+            b.hx,
+            b.hy,
+            dent=dc.dent + dc.v_overshoot,
             side="right",
         )
-        # Right step
-        draw_rect(pen, x2 - stroke + fc.gap, 0, x2, fc.x_height)
-        draw_rect(pen, x2 - stroke, fc.tooth, x2, fc.x_height - fc.tooth)
-        # Curve to the bottom left
+        # Right stem with gap at baseline and dent inset
+        draw_rect(pen, b.x2 - dc.stroke + dc.gap, 0, b.x2, dc.x_height)
+        draw_rect(pen, b.x2 - dc.stroke, dc.dent, b.x2, dc.x_height - dc.dent)
+
+        # Corner curving down-left into the descender
         draw_corner(
             pen,
-            stroke - fc.gap,
-            x2,
+            dc.stroke - dc.gap,
+            b.x2,
             0,
-            x2 - corner_width,
-            fc.descent + fc.tail_offset,
-            corner_hx,
-            corner_hy,
+            b.x2 - b.width / 2,
+            dc.descent + self.tail_offset,
+            b.hx * 0.5,
+            b.hy,
             orientation="bottom-left",
         )
+        # Horizontal tail along the descender
         draw_rect(
             pen,
-            x1 + stroke / 2,
-            fc.descent + fc.tail_offset,
-            x2 - corner_width,
-            fc.descent + fc.tail_offset + stroke - fc.gap,
+            b.x1 + dc.stroke / 2,
+            dc.descent + self.tail_offset,
+            b.x2 - b.width / 2,
+            dc.descent + self.tail_offset + dc.stroke - dc.gap,
         )
