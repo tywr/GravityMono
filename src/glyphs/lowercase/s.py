@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.superellipse_loop import draw_superellipse_loop
 from shapes.cross_curve import draw_cross_curve
@@ -7,61 +6,41 @@ from shapes.cross_curve import draw_cross_curve
 class LowercaseSGlyph(Glyph):
     name = "lowercase_s"
     unicode = "0x73"
+    offset = 0
+    loop_ratio = 0.6  # Controls the height of each half-loop
+    rx = 0.8  # Horizontal curve dampening (dc.hx * rx)
+    rm = 0.75
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 0
-        width = fc.body_width + 2 * fc.h_overshoot
-        ratio = fc.a_ratio
-        hx = fc.a_hx
-        hy = fc.a_hy
-
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height + fc.overshoot
-        ymid = y1 + (y2 - y1) / 2
-
-        loop_len = (fc.x_height + fc.overshoot) * ratio
-        ym1 = -fc.overshoot + loop_len - stroke / 2
-        ym2 = fc.x_height + fc.overshoot - loop_len + stroke / 2
-        delta_y = ratio * (fc.x_height + 2 * fc.overshoot) / 2
-
-        # Bottom arch
-        draw_superellipse_loop(
-            pen,
-            stroke,
-            x1,
-            y1,
-            x2,
-            ym1,
-            hx,
-            hy,
-            cut="top",
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            overshoot_bottom=True,
+            overshoot_top=True,
+            overshoot_left=True,
+            overshoot_right=True,
         )
+        hx, hy = dc.hx * self.rx, dc.hy * self.loop_ratio
+
+        # Height of each half-loop from its respective baseline
+        loop_len = b.y2 * self.loop_ratio
+        ym1 = b.y1 + loop_len - dc.stroke / 2  # Top of the bottom half-loop
+        ym2 = b.y2 - loop_len + dc.stroke / 2  # Bottom of the top half-loop
+
+        # Bottom half-loop (cut at top)
+        draw_superellipse_loop(pen, dc.stroke, b.x1, b.y1, b.x2, ym1, hx, hy, cut="top")
+        # Top half-loop (cut at bottom)
         draw_superellipse_loop(
-            pen,
-            stroke,
-            x1,
-            ym2,
-            x2,
-            y2,
-            hx,
-            hy,
-            cut="bottom",
+            pen, dc.stroke, b.x1, ym2, b.x2, b.y2, hx, hy, cut="bottom"
         )
-        # Middle cross junction
+        # Middle cross junction connecting the two half-loops
         draw_cross_curve(
             pen,
-            stroke,
-            x1,
-            y1 + (ym1 - y1) / 2,
-            x2,
-            y2 - (y2 - ym2) / 2,
-            0.75 * hx,
-            0.75 * hy,
+            dc.stroke,
+            b.x1,
+            (b.y1 + ym1) / 2,
+            b.x2,
+            (b.y2 + ym2) / 2,
+            self.rm * hx,
+            self.rm * hy,
             invert=True,
         )
