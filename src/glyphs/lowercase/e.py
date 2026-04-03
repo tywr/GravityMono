@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.superellipse_loop import draw_superellipse_loop
 from shapes.corner import draw_corner
@@ -8,41 +7,42 @@ from shapes.rect import draw_rect
 class LowercaseEGlyph(Glyph):
     name = "lowercase_e"
     unicode = "0x65"
+    offset = 15
+    len_tail = 340
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 15
-        width = fc.body_width + 2 * fc.h_overshoot
-        hx = fc.hx
-        hy = fc.hy
-        len_tail = 340
-
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height + fc.overshoot
-        ymid = y1 + (y2 - y1) / 2
-        xmid = x1 + (x2 - x1) / 2
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            overshoot_bottom=True,
+            overshoot_top=True,
+            overshoot_left=True,
+            overshoot_right=True,
+        )
 
         # Half-top of a superellipse
-        draw_superellipse_loop(pen, stroke, x1, y1, x2, y2, hx, hy, cut="bottom")
+        draw_superellipse_loop(
+            pen, dc.stroke, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy, cut="bottom"
+        )
         # Corner from mid-left to bottom
         draw_corner(
             pen,
-            stroke,
-            x1,
-            (fc.x_height + 2 * fc.overshoot) / 2 + fc.overshoot,
-            xmid,
+            dc.stroke,
+            b.x1,
+            b.ymid + 2 * dc.v_overshoot,
+            b.xmid,
             0,
-            hx,
-            hy,
+            b.hx,
+            b.hy,
             orientation="bottom-right",
         )
         # Extension
-        draw_rect(pen, xmid, 0, x1 + len_tail + stroke / 2, stroke)
+        draw_rect(pen, b.xmid, 0, b.x1 + self.len_tail + dc.stroke / 2, dc.stroke)
         # Mid-bar
-        draw_rect(pen, x1 + stroke / 2, ymid, x2 - stroke / 2, ymid + stroke / 2)
-        draw_rect(pen, x1 + stroke / 2, ymid - stroke / 2, x2, ymid)
+        draw_rect(
+            pen,
+            b.x1 + dc.stroke / 2,
+            b.ymid,
+            b.x2 - dc.stroke / 2,
+            b.ymid + dc.stroke / 2,
+        )
+        draw_rect(pen, b.x1 + dc.stroke / 2, b.ymid - dc.stroke / 2, b.x2, b.ymid)
