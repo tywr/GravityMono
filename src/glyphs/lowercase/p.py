@@ -1,5 +1,7 @@
 from glyphs import Glyph
-from shapes.superellipse_arch import draw_superellipse_arch
+
+# from shapes.superellipse_arch import draw_superellipse_arch
+from draw.superellipse_arch import draw_superellipse_arch
 from shapes.rect import draw_rect
 
 
@@ -17,7 +19,7 @@ class LowercasePGlyph(Glyph):
         )
 
         # Bowl (open on the left, same as b)
-        draw_superellipse_arch(
+        arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -27,9 +29,14 @@ class LowercasePGlyph(Glyph):
             b.y2,
             dc.hx,
             dc.hy,
-            dent=dc.dent + dc.v_overshoot,
+            taper=dc.taper,
             side="left",
         )
+
+        # Compute the intersection of the outer bowl with the stem
+        (_, y1), (_, y2) = arch_params["outer"].intersection_x(x=b.x1 + dc.stroke_x)
+        y1, y2 = min(y1, y2), max(y1, y2)
+
         # Left descender stem
         draw_rect(pen, b.x1, dc.descent, b.x1 + dc.stroke_x - dc.gap, dc.x_height)
-        draw_rect(pen, b.x1, dc.dent, b.x1 + dc.stroke_x, dc.x_height - dc.dent)
+        draw_rect(pen, b.x1, y1, b.x1 + dc.stroke_x, y2)

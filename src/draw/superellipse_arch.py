@@ -2,8 +2,7 @@ import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 
 from shapes.rect import draw_rect
-from shapes.superellipse import Superellipse, draw_superellipse
-from utils.intersection import find_offset
+from shapes.superellipse import Superellipse
 
 
 def draw_superellipse_arch(
@@ -16,42 +15,35 @@ def draw_superellipse_arch(
     y2,
     hx,
     hy,
-    dent=70,
     side="right",
     cut=None,
-    offset=None,
+    taper=0.5,
 ):
     w, h = (x2 - x1) / 2, (y2 - y1) / 2
     y_mid = y1 + h
 
-    offset = stroke_x / 2
-    # if offset is None:
-    #     if side in ("left", "right"):
-    #         offset = find_offset(x1, y1, x2, y2, hx, hy, stroke_x, dent)
-    #     else:
-    #         offset = find_offset(-y2, x1, -y1, x2, hy, hx, stroke_y, dent)
+    offset_x = taper * stroke_x
+    offset_y = taper * stroke_y
+
+    se = Superellipse(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)
 
     # Outer box
-    ox1 = x1 + (stroke_x - offset if side == "left" else 0)
-    oy1 = y1 + (stroke_y - offset if side == "bottom" else 0)
-    ox2 = x2 - (stroke_x - offset if side == "right" else 0)
-    oy2 = y2 - (stroke_y - offset if side == "top" else 0)
-    ohx = hx * (w - offset) / w
-    ohy = hy * (h - offset) / h
-
-    # Inner box
-    ix1 = x1 + stroke_x
-    iy1 = y1 + stroke_y
-    ix2 = x2 - stroke_x
-    iy2 = y2 - stroke_y
-    ihx = hx * (w - stroke_x) / w
-    ihy = hy * (h - stroke_y) / h
+    outer_se = se.reduce(
+        right=stroke_x - offset_x if side == "right" else 0,
+        left=stroke_x - offset_x if side == "left" else 0,
+        top=stroke_y - offset_y if side == "top" else 0,
+        bottom=stroke_y - offset_y if side == "bottom" else 0,
+    )
+    inner_se = outer_se.reduce(
+        left=stroke_x if side != "left" else offset_x,
+        right=stroke_x if side != "right" else offset_x,
+        top=stroke_y if side != "top" else offset_y,
+        bottom=stroke_y if side != "bottom" else offset_y,
+    )
 
     loop_glyph = ufoLib2.objects.Glyph()
-    draw_superellipse(
-        loop_glyph.getPen(), ox1, oy1, ox2, oy2, ohx, ohy, clockwise=False
-    )
-    draw_superellipse(loop_glyph.getPen(), ix1, iy1, ix2, iy2, ihx, ihy, clockwise=True)
+    outer_se.draw(loop_glyph.getPen(), clockwise=False)
+    inner_se.draw(loop_glyph.getPen(), clockwise=True)
 
     if cut == "bottom":
         cut_glyph = ufoLib2.objects.Glyph()
@@ -97,21 +89,6 @@ def draw_superellipse_arch(
         result.draw(pen)
 
     return {
-        "offset": offset,
-        "outer": Superellipse(
-            x1=ox1,
-            y1=oy1,
-            x2=ox2,
-            y2=oy2,
-            hx=ohx,
-            hy=ohy,
-        ),
-        "inner": Superellipse(
-            x1=ix1,
-            y1=iy1,
-            x2=ix2,
-            y2=iy2,
-            hx=ihx,
-            hy=ihy,
-        ),
+        "outer": outer_se,
+        "inner": inner_se,
     }
