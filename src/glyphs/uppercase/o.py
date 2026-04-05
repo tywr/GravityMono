@@ -1,24 +1,22 @@
-from config import FontConfig as fc
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
 from glyph import Glyph
 from shapes.superellipse_loop import draw_superellipse_loop
+from shapes.rect import draw_rect
 
 
-class UppercaseOGlyph(Glyph):
+class UppercaseCGlyph(Glyph):
     name = "uppercase_o"
     unicode = "0x4F"
+    offset = 0
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 0
-        width = fc.body_width + 2 * fc.h_overshoot
-        hx = fc.hx
-        hy = fc.hy * fc.ascent / fc.x_height
-
-        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
-        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.ascent + fc.overshoot
-        draw_superellipse_loop(pen, stroke, x1, y1, x2, y2, hx, hy)
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            height="ascent",
+            overshoot_bottom=True,
+            overshoot_top=True,
+            overshoot_left=True,
+            overshoot_right=True,
+        )
+        draw_superellipse_loop(pen, dc.stroke, b.x1, b.y1, b.x2, b.y2, dc.hx, dc.hy)

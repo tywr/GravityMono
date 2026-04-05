@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.rect import draw_rect
 
@@ -6,33 +5,12 @@ from shapes.rect import draw_rect
 class UppercaseLGlyph(Glyph):
     name = "uppercase_l"
     unicode = "0x4C"
+    offset = 0
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 20
-        len_left = 200
-        len_right = 200
-        len_cap = 200
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset, height="ascent")
 
-        xmid = fc.width / 2 + offset
-        # Stem
-        draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.ascent)
-        # Footer
-        draw_rect(
-            pen,
-            xmid - len_left - stroke / 2,
-            0,
-            xmid + len_right + stroke / 2,
-            stroke
-        )
-        # Left cap
-        draw_rect(
-            pen,
-            xmid - len_cap - stroke / 2,
-            fc.ascent - stroke,
-            xmid,
-            fc.ascent,
-        )
+        # Vertical stem
+        draw_rect(pen, b.x1, b.y1, b.x1 + dc.stroke, b.y2)
+        # Bottom bar
+        draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + dc.stroke)

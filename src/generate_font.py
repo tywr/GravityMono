@@ -9,6 +9,7 @@ from fontTools.fontBuilder import FontBuilder
 from fontTools.pens.t2CharStringPen import T2CharStringPen
 
 from config import FontConfig as fc
+from config import DrawConfig
 from glyph import Glyph
 
 import glyphs
@@ -41,7 +42,7 @@ def record_glyph(glyph, **kwargs):
     glyph.draw(pathops.PathPen(path), **kwargs)
     path = pathops.simplify(path, clockwise=False, keep_starting_points=True)
 
-    pen = T2CharStringPen(fc.width, None)
+    pen = T2CharStringPen(fc.window_width, None)
     path.draw(pen)
     return pen.getCharString()
 
@@ -54,17 +55,17 @@ def build_font(output_path=f"{fc.family_name}.otf"):
         cmap[int(g.unicode, 16)] = g.name
 
     # Build charstrings
-    notdef_pen = T2CharStringPen(fc.width, None)
+    notdef_pen = T2CharStringPen(fc.window_width, None)
     draw_notdef(notdef_pen)
 
-    space_pen = T2CharStringPen(fc.width, None)
+    space_pen = T2CharStringPen(fc.window_width, None)
 
     charstrings = {
         ".notdef": notdef_pen.getCharString(),
         "space": space_pen.getCharString(),
     }
     for g in all_glyphs:
-        charstrings[g.name] = record_glyph(g, stroke=fc.default_stroke)
+        charstrings[g.name] = record_glyph(g, dc=DrawConfig())
 
     glyph_names = list(charstrings.keys())
 
@@ -77,7 +78,7 @@ def build_font(output_path=f"{fc.family_name}.otf"):
         charStringsDict=charstrings,
         privateDict={},
     )
-    fb.setupHorizontalMetrics({name: (fc.width, 0) for name in glyph_names})
+    fb.setupHorizontalMetrics({name: (fc.window_width, 0) for name in glyph_names})
     fb.setupHorizontalHeader(ascent=fc.window_ascent, descent=-abs(fc.window_descent))
     fb.setupNameTable(
         {

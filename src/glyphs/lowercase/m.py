@@ -20,7 +20,7 @@ class LowercaseMGlyph(Glyph):
         )
 
         # Left arch (x1 to xmid) and store offset
-        offset = draw_superellipse_arch(
+        arch_params = draw_superellipse_arch(
             pen,
             dc.stroke,
             b.x1,
@@ -33,6 +33,7 @@ class LowercaseMGlyph(Glyph):
             side="left",
             cut="m_junction",
         )
+        offset = arch_params["offset"]
         # Right arch (xmid to x2)
         draw_superellipse_arch(
             pen,

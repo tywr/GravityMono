@@ -1,55 +1,25 @@
-from config import FontConfig as fc
 from glyph import Glyph
-from shapes.corner import draw_corner
 from shapes.rect import draw_rect
 
 
 class UppercaseFGlyph(Glyph):
     name = "uppercase_f"
     unicode = "0x46"
+    offset = 0
+    mid_bar_ratio = 0.95
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = -28
-        len_left = 140
-        len_right = 240
-        corner_width = 150
-        bar_height = 495
-        hx = 150
-        hy = 150
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset, height="ascent")
 
-        xmid = fc.width / 2 + offset
-        # Stem
-        draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
-        # Cross-bar
+        # Vertical stem
+        draw_rect(pen, b.x1, b.y1, b.x1 + dc.stroke, b.y2)
+        # Top bar
+        draw_rect(pen, b.x1, b.y2 - dc.stroke, b.x2, b.y2)
+        # Middle bar
         draw_rect(
             pen,
-            xmid - len_left - stroke / 2,
-            bar_height - stroke,
-            xmid + len_right + stroke / 2,
-            bar_height,
+            b.x1,
+            b.ymid - dc.stroke / 2,
+            b.x1 + self.mid_bar_ratio * b.width,
+            b.ymid + dc.stroke / 2,
         )
-        # Corner
-        draw_corner(
-            pen,
-            stroke,
-            xmid - stroke / 2,
-            fc.x_height,
-            xmid + corner_width,
-            fc.ascent,
-            hx,
-            hy,
-            orientation="top-right",
-        )
-        # Extension after the corner to the right
-        if len_right > corner_width:
-            draw_rect(
-                pen,
-                xmid + corner_width,
-                fc.ascent - stroke,
-                xmid + len_right + stroke / 2,
-                fc.ascent,
-            )

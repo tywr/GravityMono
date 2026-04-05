@@ -1,3 +1,22 @@
+class Superellipse:
+    __slots__ = ("x1", "y1", "x2", "y2", "hx", "hy")
+
+    def __init__(self, x1, y1, x2, y2, hx, hy):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+        self.hx = hx
+        self.hy = hy
+
+    def translate(self, dx=0, dy=0):
+        return Superellipse(
+            self.x1 + dx, self.y1 + dy,
+            self.x2 + dx, self.y2 + dy,
+            self.hx, self.hy,
+        )
+
+
 def draw_superellipse(
     pen,
     x1,
@@ -76,3 +95,5 @@ def draw_superellipse(
             pen.curveTo((x2, mid_y + hy), (mid_x + hx, y2), (mid_x, y2))
 
     pen.closePath()
+
+    return Superellipse(x1, y1, x2, y2, hx, hy)
