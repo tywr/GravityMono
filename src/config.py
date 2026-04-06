@@ -28,13 +28,14 @@ class DrawConfig(FontConfig):
     width: int = 340
     hx: int = 200
     hy: int = 200
-    taper: float = 0.25
-    # hx: int = 180
-    # hy: int = 180
-    # taper: float = 0.4
+    taper: float = 0.293
     gap: int = 5
     v_overshoot: int = 10
     h_overshoot: int = 5
+
+    # Fine-tuned taper for a & m
+    taper_a: float = 0.104
+    taper_m: float = 0.162
 
     def body_bounds(
         self,
@@ -72,4 +73,8 @@ class DrawConfig(FontConfig):
         if overshoot_top:
             y2 += self.v_overshoot
 
-        return BodyBounds(x1=x1, y1=y1, x2=x2, y2=y2)
+        # Rescale the hx and hy for the new box
+        hx = self.hx * (x2 - x1 - self.stroke_x) / self.width
+        hy = self.hy * (y2 - y1 - self.stroke_y) / self.x_height
+
+        return BodyBounds(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)

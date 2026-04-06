@@ -9,8 +9,9 @@ class LowercaseNGlyph(Glyph):
     offset = 0
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, overshoot_top=True, overshoot_bottom=True)
-        hx, hy = dc.hx, dc.hy
+        b = dc.body_bounds(
+            offset=self.offset, overshoot_top=True, overshoot_bottom=True
+        )
 
         # Top arch, cut at the bottom (only upper half drawn)
         arch_params = draw_superellipse_arch(
@@ -21,8 +22,8 @@ class LowercaseNGlyph(Glyph):
             b.y2 - b.height,
             b.x2,
             b.y2,
-            hx,
-            hy,
+            b.hx,
+            b.hy,
             taper=dc.taper,
             side="left",
             cut="bottom",

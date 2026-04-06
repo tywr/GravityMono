@@ -3,13 +3,13 @@ from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 
 
-class UppercaseLGlyph(UppercaseGlyph):
+class UppercaseMGlyph(UppercaseGlyph):
     name = "uppercase_m"
     unicode = "0x4D"
     offset = 0
     width_ratio = 1.2
-    overlap = 0.4
-    depth = 0.75
+    overlap = 0.5
+    depth = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,7 +24,7 @@ class UppercaseLGlyph(UppercaseGlyph):
 
         # Branches
         draw_parallelogramm(
-            pen, dc.stroke_x, dc.stroke_y, b.xmid - ov, ymid, b.x2 - ov, b.y2
+            pen, dc.stroke_x, dc.stroke_y, b.xmid - ov, ymid, b.x2, b.y2
         )
         draw_parallelogramm(
             pen,
@@ -32,7 +32,7 @@ class UppercaseLGlyph(UppercaseGlyph):
             dc.stroke_y,
             b.xmid + ov,
             ymid,
-            b.x1 + ov,
+            b.x1,
             b.y2,
             direction="top-left",
         )

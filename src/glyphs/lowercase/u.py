@@ -12,7 +12,6 @@ class LowercaseUGlyph(Glyph):
         b = dc.body_bounds(
             offset=self.offset, overshoot_bottom=True, overshoot_top=True
         )
-        hx, hy = dc.hx, dc.hy
         arch_top = b.y2
 
         # Bottom arch, cut at top (only lower half drawn)
@@ -24,9 +23,9 @@ class LowercaseUGlyph(Glyph):
             b.y1,
             b.x2,
             arch_top,
-            hx,
-            hy,
-            taper=dc.taper,
+            b.hx,
+            b.hy,
+            taper=dc.taper_unh,
             side="right",
             cut="top",
         )

@@ -15,7 +15,6 @@ class LowercaseHGlyph(Glyph):
             overshoot_top=True,
             overshoot_bottom=True,
         )
-        hx, hy = dc.hx, dc.hy
 
         # Top arch, cut at the bottom (only upper half drawn)
         arch_params = draw_superellipse_arch(
@@ -26,8 +25,8 @@ class LowercaseHGlyph(Glyph):
             b.y2 - b.height,
             b.x2,
             b.y2,
-            hx,
-            hy,
+            b.hx,
+            b.hy,
             taper=dc.taper,
             side="left",
             cut="bottom",

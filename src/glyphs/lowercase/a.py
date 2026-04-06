@@ -17,7 +17,7 @@ class LowercaseAGlyph(Glyph):
             overshoot_bottom=True,
             overshoot_left=True,
         )
-        hx, hy = dc.hx, dc.hy * self.loop_ratio
+        hx, hy = b.hx, b.hy * self.loop_ratio
 
         # Lower half half of the bowl
         arch_params = draw_superellipse_arch(
@@ -30,7 +30,7 @@ class LowercaseAGlyph(Glyph):
             b.y1 + b.height * self.loop_ratio,
             hx,
             hy,
-            taper=dc.taper,
+            taper=dc.taper_a,
             side="right",
             cut="top",
         )

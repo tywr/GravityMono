@@ -27,8 +27,8 @@ class LowercasePGlyph(Glyph):
             b.y1,
             b.x2,
             b.y2,
-            dc.hx,
-            dc.hy,
+            b.hx,
+            b.hy,
             taper=dc.taper,
             side="left",
         )

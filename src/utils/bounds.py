@@ -14,7 +14,6 @@ class BodyBounds:
     Attributes:
         x1, y1: Bottom-left corner of the body rectangle.
         x2, y2: Top-right corner of the body rectangle.
-        hx, hy: Superellipse curve radii, scaled to the body size.
         width:  Horizontal span (x2 - x1).
         height: Vertical span (y2 - y1).
         xmid:   Horizontal center.
@@ -25,6 +24,8 @@ class BodyBounds:
     x2: float
     y1: float
     y2: float
+    hx: float
+    hy: float
 
     def __repr__(self):
         return f"BodyBounds(x1={self.x1}, y1={self.y1}, x2={self.x2}, y2={self.y2})"
