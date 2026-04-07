@@ -27,7 +27,7 @@ def visualize_text(text, point_size=None, guides=False):
         char = chr(int(g.unicode, 16))
         glyph_map[char] = g
 
-    fig, ax = plt.subplots(1, 1, figsize=(max(6, len(text) * 1.5), 4))
+    fig, ax = plt.subplots(1, 1, figsize=(max(6, len(text) * 1.5), 4), dpi=200)
 
     cursor_x = 0
     for ch in text:
@@ -83,9 +83,11 @@ def visualize_text(text, point_size=None, guides=False):
     ax.set_xlim(-50, cursor_x + 80)
     ax.set_ylim(fc.descent - 50, fc.ascent + 50)
     ax.set_aspect("equal")
-    title = f"{text} ({point_size}pt)" if point_size else text
-    ax.set_title(title, fontsize=14)
-    ax.grid(True, alpha=0.15)
+    if point_size is not None:
+        ax.set_title(f"{point_size}pt", fontsize=14)
+    else:
+        ax.set_title(text, fontsize=14)
+    ax.set_axis_off()
 
     # When a point size is specified, lock the data-to-display ratio so the
     # glyphs stay at the requested physical size regardless of window resizing.

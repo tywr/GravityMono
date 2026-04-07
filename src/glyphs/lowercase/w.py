@@ -8,7 +8,7 @@ class LowercaseWGlyph(Glyph):
     offset = 0
     overlap = 0.3
     width_ratio = 1.25
-    inner_stroke_ratio = 0.8
+    inner_stroke_ratio = 0.75
     inner_height_ratio = 0.7
     inner_angle_ratio = 0.18
 

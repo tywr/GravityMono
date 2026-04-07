@@ -11,6 +11,7 @@ class SixGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.6
     width_ratio = 1.06
+    top_ratio = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,8 +25,7 @@ class SixGlyph(NumberGlyph):
         )
 
         ymid = b.y1 + self.vertical_ratio * b.height
-        hy = b.hy * 4 * (b.y2 - ymid) / b.height
-        hx = 2 * b.hx
+        ytop = b.y1 + self.top_ratio * b.height
 
         # Bottom loop
         draw_superellipse_loop(
@@ -35,10 +35,10 @@ class SixGlyph(NumberGlyph):
             b.x1,
             b.y1,
             b.x2,
-            ymid,
+            b.y2,
             b.hx,
-            b.hy * self.vertical_ratio,
-            cut="top",
+            b.hy,
+            cut="right",
         )
         draw_superellipse_arch(
             pen,
@@ -50,6 +50,7 @@ class SixGlyph(NumberGlyph):
             ymid,
             b.hx,
             b.hy * self.vertical_ratio,
+            taper=dc.taper,
             side="left",
             cut="bottom",
         )
@@ -57,11 +58,37 @@ class SixGlyph(NumberGlyph):
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            b.x1,
+            b.x2,
             b.y1 + (ymid - b.y1) / 2,
-            b.x2 - dc.stroke_x / 2,
-            b.y2,
-            hx,
-            hy,
-            orientation="top-right",
+            b.xmid,
+            b.y1,
+            b.hx,
+            b.hy * self.vertical_ratio,
+            orientation="bottom-left"
         )
+        draw_corner(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x2,
+            ytop,
+            b.xmid,
+            b.y2,
+            b.hx,
+            b.hy * 2 * (b.y2 - ytop) / b.height,
+            orientation="top-left"
+        )
+
+        # Cap
+        # draw_superellipse_loop(
+        #     pen,
+        #     dc.stroke_x,
+        #     dc.stroke_y,
+        #     b.x1,
+        #     ytop,
+        #     b.x2,
+        #     b.y2,
+        #     b.hx,
+        #     b.hy * self.top_ratio,
+        #     cut="bottom",
+        # )
