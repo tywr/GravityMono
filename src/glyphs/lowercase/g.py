@@ -8,7 +8,7 @@ class LowercaseGGlyph(Glyph):
     name = "lowercase_g"
     unicode = "0x67"
     offset = 0
-    tail_offset = 20  # Y-axis offset of the tail above the descender line
+    tail_offset = 0  # Y-axis offset of the tail above the descender line
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -49,8 +49,8 @@ class LowercaseGGlyph(Glyph):
             0,
             b.x2 - b.width / 2,
             dc.descent + self.tail_offset,
-            dc.hx * 0.5,
-            dc.hy,
+            b.hx * 0.5,
+            b.hy,
             orientation="bottom-left",
         )
         # Horizontal tail along the descender
