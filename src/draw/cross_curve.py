@@ -17,6 +17,8 @@ def draw_cross_curve(
 
     At the corners the tangent is vertical; at the center it is horizontal.
     """
+    from math import sqrt
+
     if invert:
         x1, y1, x2, y2 = x1, y2, x2, y1
     mid_x = (x1 + x2) / 2
@@ -24,16 +26,28 @@ def draw_cross_curve(
     hh = (y2 - y1) / 2
 
     sign = -1 if invert else 1
-    ohy = hy * (hh + stroke_y / 2) / hh
-    ihy = ohy
+
+    # Compute perpendicular stroke at the midpoint based on the diagonal angle,
+    # matching the parallelogramm stroke formula
+    w = x2 - x1
+    h = abs(y2 - y1)
+    diag = sqrt(w**2 + h**2)
+    s = sqrt((stroke_x * h / diag) ** 2 + (stroke_y * w / diag) ** 2)
+    s2x = s / 2 * h / diag
+    s2y = s / 2 * w / diag
+
+    # Upper stroke edge spans hh + s2y, lower spans hh - s2y
+    ahh = abs(hh)
+    ohy = hy * (ahh + s2y) / ahh
+    ihy = hy * (ahh - s2y) / ahh
     if invert:
         ihy, ohy = ohy, ihy
 
-    s2 = stroke_y / 2
-
     pen.moveTo((x1, y1))
     pen.curveTo(
-        (x1, y1 + sign * ohy), (x1, y1 + sign * ohy), (mid_x, mid_y + sign * s2)
+        (x1, y1 + sign * ohy),
+        (x1, y1 + sign * ohy),
+        (mid_x - sign * s2x, mid_y + sign * s2y),
     )
     pen.curveTo(
         (x2 - stroke_x, y2 - sign * ihy),
@@ -42,7 +56,9 @@ def draw_cross_curve(
     )
     pen.lineTo((x2, y2))
     pen.curveTo(
-        (x2, y2 - sign * ohy), (x2, y2 - sign * ohy), (mid_x, mid_y - sign * s2)
+        (x2, y2 - sign * ohy),
+        (x2, y2 - sign * ohy),
+        (mid_x + sign * s2x, mid_y - sign * s2y),
     )
     pen.curveTo(
         (x1 + stroke_x, y1 + sign * ihy),

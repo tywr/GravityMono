@@ -24,7 +24,7 @@ class TwoGlyph(NumberGlyph):
         draw_superellipse_loop(
             pen,
             dc.stroke_x,
-            dc.stroke_y,
+            dc.stroke_x,
             b.x1,
             b.ymid,
             b.x2,
