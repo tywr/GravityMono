@@ -15,11 +15,11 @@ class ZeroGlyph(NumberGlyph):
             offset=self.offset,
             height="cap",
             width_ratio=self.width_ratio,
-            number=True,
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
+            number=True,
         )
 
         draw_superellipse_loop(

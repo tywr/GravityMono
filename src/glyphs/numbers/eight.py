@@ -1,5 +1,5 @@
 from glyphs.numbers import NumberGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.superellipse_arch import draw_superellipse_arch
 from draw.cross_curve import draw_cross_curve
 
 
@@ -7,7 +7,8 @@ class EightGlyph(NumberGlyph):
     name = "eight"
     unicode = "0x38"
     offset = 0
-    loop_ratio = 0.5
+    height_ratio = 0.52
+    loop_width_ratio = 0.92
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -18,30 +19,38 @@ class EightGlyph(NumberGlyph):
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
+            number=True,
         )
-        hx, hy = b.hx, b.hy * self.loop_ratio
+        ymid = b.y1 + b.height * self.height_ratio
+        wtop = self.loop_width_ratio * b.width
+        dtop = (b.width - wtop) / 2
 
-        loop_len = b.y2 * self.loop_ratio
-        ym1 = b.y1 + loop_len - dc.stroke_y / 2
-        ym2 = b.y2 - loop_len + dc.stroke_y / 2
+        # Top loop
+        draw_superellipse_arch(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1 + dtop,
+            ymid - dc.stroke_y / 2,
+            b.x2 - dtop,
+            b.y2,
+            b.hx,
+            b.hy * (1 - self.height_ratio),
+            taper=0.75,
+            side="bottom",
+        )
 
         # Bottom loop
-        draw_superellipse_loop(
-            pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, ym1, hx, hy
-        )
-        # Top loop
-        draw_superellipse_loop(
-            pen, dc.stroke_x, dc.stroke_y, b.x1, ym2, b.x2, b.y2, hx, hy
-        )
-        # Middle cross junction connecting the two loops
-        draw_cross_curve(
+        draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            (b.y1 + ym1) / 2,
+            b.y1,
             b.x2,
-            (b.y2 + ym2) / 2,
+            ymid + dc.stroke_y / 2,
             b.hx,
-            b.hy / 2,
+            b.hy * self.height_ratio,
+            taper=0.75,
+            side="top"
         )
