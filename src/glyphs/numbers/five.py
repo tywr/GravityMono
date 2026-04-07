@@ -1,53 +1,65 @@
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
+
 from glyphs.numbers import NumberGlyph
-from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
+from draw.superellipse_loop import draw_superellipse_loop
 
 
 class FiveGlyph(NumberGlyph):
     name = "five"
     unicode = "0x35"
     offset = 0
+    mid_ratio_y = 0.52
+    mid_ratio_x = 0.35
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
             height="cap",
-            overshoot_bottom=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
+            number=True,
         )
+        ymid = b.y1 + self.mid_ratio_y * b.height
+        xmid = b.x1 + self.mid_ratio_x * b.width
 
-        # Lower arch (right side bowl)
-        draw_superellipse_arch(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            b.x1,
-            b.y1,
-            b.x2,
-            b.ymid + dc.stroke_y / 2,
-            b.hx,
-            b.hy * 0.5,
-            side="top",
-            cut="left",
-        )
-        # Left vertical stem (upper half)
-        draw_rect(
-            pen,
-            b.x1,
-            b.ymid - dc.stroke_y / 2,
-            b.x1 + dc.stroke_x,
-            b.y2,
-        )
         # Top bar
         draw_rect(pen, b.x1, b.y2 - dc.stroke_y, b.x2, b.y2)
-        # Middle bar connecting stem to arch
-        draw_rect(
-            pen,
-            b.x1,
-            b.ymid - dc.stroke_y / 2,
-            b.xmid,
-            b.ymid + dc.stroke_y / 2,
+
+        # Bottom loop
+        loop_width = (b.x2 - xmid) * 2
+        loop_height = ymid + dc.stroke_y - b.y1
+        hx = b.hx * loop_width / b.width
+        hy = b.hy * loop_height / b.height
+
+        # Half-loop to the bottom
+        loop_glyph = ufoLib2.objects.Glyph()
+        params = draw_superellipse_loop(
+            loop_glyph.getPen(),
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x2 - loop_width,
+            b.y1,
+            b.x2,
+            ymid + dc.stroke_y,
+            hx,
+            hy,
         )
-        # Bottom bar
-        draw_rect(pen, b.x1, b.y1, b.xmid, b.y1 + dc.stroke_y)
+
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(
+            cut_glyph.getPen(),
+            b.x2 - loop_width - 10,
+            b.y1,
+            b.x1,
+            ymid + dc.stroke_y,
+        )
+
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
+
+        # Vertical bar
+        (_, y1), (_, y2) = params["outer"].intersection_x(x=b.x1)
+        yloop = max(y1, y2)
+        draw_rect(pen, b.x1, yloop, b.x1 + dc.stroke_x, b.y2)

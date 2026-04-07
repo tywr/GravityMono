@@ -1,40 +1,31 @@
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm
 
 
 class FourGlyph(NumberGlyph):
     name = "four"
     unicode = "0x34"
     offset = 0
-    crossbar_ratio = 0.4  # Height of the crossbar as fraction of cap
+    horizontal_ratio = 0.65
+    vertical_ratio = 0.3
+    mid_bar_ratio = 0.5
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        crossbar_y = b.y1 + b.height * self.crossbar_ratio
 
-        # Vertical stem (right side)
-        draw_rect(
-            pen,
-            b.x2 - dc.stroke_x,
-            b.y1,
-            b.x2,
-            b.y2,
+        xmid = b.x1 + self.horizontal_ratio * b.width
+        ymid = b.y1 + self.vertical_ratio * b.height
+        ybar = b.y1 + self.mid_bar_ratio * b.height
+
+        theta, delta = draw_parallelogramm(
+            pen, dc.stroke_x, dc.stroke_y, b.x1, ymid, xmid, b.y2
         )
-        # Horizontal crossbar
-        draw_rect(
-            pen,
-            b.x1,
-            crossbar_y - dc.stroke_y / 2,
-            b.x2,
-            crossbar_y + dc.stroke_y / 2,
-        )
-        # Left diagonal approximated as a vertical + top
-        draw_rect(
-            pen,
-            b.x1,
-            crossbar_y - dc.stroke_y / 2,
-            b.x1 + dc.stroke_x,
-            b.y2,
-        )
+
+        # Horizontal line
+        draw_rect(pen, b.x1, ymid - dc.stroke_y, b.x2, ymid)
+
+        # Vertical line
+        draw_rect(pen, xmid - dc.stroke_x / 2, b.y1, xmid + dc.stroke_x / 2, ybar)

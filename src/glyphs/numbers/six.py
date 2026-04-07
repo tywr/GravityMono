@@ -8,6 +8,7 @@ class SixGlyph(NumberGlyph):
     name = "six"
     unicode = "0x36"
     offset = 0
+    vertical_ratio = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -17,7 +18,10 @@ class SixGlyph(NumberGlyph):
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
+            number=True,
         )
+
+        ymid = b.y1 + self.vertical_ratio * b.height
 
         # Bottom loop
         draw_superellipse_loop(
@@ -27,23 +31,7 @@ class SixGlyph(NumberGlyph):
             b.x1,
             b.y1,
             b.x2,
-            b.ymid + dc.stroke_y / 2,
+            ymid,
             b.hx,
             b.hy * 0.5,
-        )
-        # Left stem extending up from the loop
-        draw_rect(
-            pen,
-            b.x1,
-            b.ymid - dc.stroke_y / 2,
-            b.x1 + dc.stroke_x,
-            b.y2,
-        )
-        # Top cap
-        draw_rect(
-            pen,
-            b.x1,
-            b.y2 - dc.stroke_y,
-            b.xmid,
-            b.y2,
         )

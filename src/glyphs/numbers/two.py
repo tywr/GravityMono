@@ -18,6 +18,7 @@ class TwoGlyph(NumberGlyph):
             overshoot_top=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
+            number=True,
         )
 
         # Top arch
