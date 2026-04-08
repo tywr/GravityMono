@@ -17,7 +17,7 @@ class FontConfig:
     x_height: int = 535
 
     accent: int = 680
-    accent_cap: int = 835
+    accent_cap: int = 860
 
     default_stroke = 90
 
