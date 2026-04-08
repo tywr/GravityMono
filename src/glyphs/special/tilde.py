@@ -9,7 +9,7 @@ class TildeGlyph(Glyph):
     offset = 0
     height_ratio = 0.35
     corner_ratio = 0.25
-    width_ratio = 1.2
+    width_ratio = 1
     stroke_ratio = 0.8
 
     def draw(self, pen, dc):
@@ -42,7 +42,7 @@ class TildeGlyph(Glyph):
             y2 - s,
             b.x2 - cr * b.width,
             y1 + s,
-            b.hx * 0.2,
+            b.hx * cr,
             b.hy * self.height_ratio,
         )
         draw_corner(
@@ -55,5 +55,5 @@ class TildeGlyph(Glyph):
             y1,
             b.hx * cr,
             b.hy,
-            orientation="bottom-left"
+            orientation="bottom-left",
         )
