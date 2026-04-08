@@ -51,11 +51,11 @@ def draw_cross_curve(
     pen.moveTo((x1 + inv * stroke_x, y1))
     pen.curveTo(
         (x1 + inv * stroke_x, y1 + sign * ohy),
-        (mid_x - sign * s2x + sign * hx, mid_y + s2y),
+        (mid_x - sign * s2x - hx, mid_y + s2y),
         (mid_x - sign * s2x, mid_y + s2y),
     )
     pen.curveTo(
-        (mid_x - sign * s2x - sign * hx, mid_y + s2y),
+        (mid_x - sign * s2x + hx, mid_y + s2y),
         (x2 - (1 - inv) * stroke_x, y2 - sign * ihy),
         (x2 - (1 - inv) * stroke_x, y2),
     )
@@ -63,11 +63,11 @@ def draw_cross_curve(
     pen.lineTo((x2 - inv * stroke_x, y2))
     pen.curveTo(
         (x2 - inv * stroke_x, y2 - sign * ohy),
-        (mid_x + sign * s2x - sign * hx, mid_y - s2y),
+        (mid_x + sign * s2x + hx, mid_y - s2y),
         (mid_x + sign * s2x, mid_y - s2y),
     )
     pen.curveTo(
-        (mid_x + sign * s2x + sign * hx, mid_y - s2y),
+        (mid_x + sign * s2x - hx, mid_y - s2y),
         (x1 + (1 - inv) * stroke_x, y1 + sign * ihy),
         (x1 + (1 - inv) * stroke_x, y1),
     )
