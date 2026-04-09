@@ -1,10 +1,9 @@
 from glyphs import Glyph
-from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 from draw.superellipse_loop import draw_superellipse_loop
 
 
-class QuotationMarkGlyph(Glyph):
+class PercentMarkGlyph(Glyph):
     name = "percent_mark"
     unicode = "0x25"
     offset = 0
