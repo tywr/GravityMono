@@ -2,7 +2,7 @@ from glyphs import Glyph
 from draw.rect import draw_rect
 
 
-class QuotationMarkGlyph(Glyph):
+class ApostropheMarkGlyph(Glyph):
     name = "apostrophe"
     unicode = "0x27"
     offset = 0

@@ -3,7 +3,7 @@ from draw.polygon import draw_polygon
 
 
 class CommaGlyph(Glyph):
-    name = "apostrophe"
+    name = "comma"
     unicode = "0x2C"
     offset = 0
     width_ratio = 1

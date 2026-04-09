@@ -7,9 +7,9 @@ class TildeGlyph(Glyph):
     name = "tilde"
     unicode = "0x7E"
     offset = 0
-    height_ratio = 0.3
-    corner_ratio = 0.3
-    width_ratio = 1
+    height_ratio = 0.36
+    corner_ratio = 0.26
+    width_ratio = 1.2
     stroke_ratio = 1
 
     def draw(self, pen, dc):

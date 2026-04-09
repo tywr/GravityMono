@@ -19,6 +19,8 @@ class FontConfig:
     accent: int = 690
     accent_cap: int = 860
 
+    math: int = 345
+
     default_stroke = 90
 
 
