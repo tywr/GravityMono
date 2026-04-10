@@ -129,7 +129,13 @@ def draw_parallelogramm_vertical(
         return theta, delta
     elif direction == "top-left":
         draw_polygon(
-            pen, points=[(x1, y1), (x2, y2 + delta), (x2, y2), (x1, y1 - delta)]
+            pen,
+            points=[
+                (x1, y1),
+                (x1, y1 + delta),
+                (x2, y2),
+                (x2, y2 - delta),
+            ],
         )
         return theta, delta
     elif direction == "bottom-left":
