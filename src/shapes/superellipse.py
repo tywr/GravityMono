@@ -70,7 +70,7 @@ class Superellipse:
             self.hy * sy,
         )
 
-    def intersection_superellipse(self, se: "Superellipse", tol=1e-3):
+    def intersection_superellipse(self, se: "Superellipse", tol=1e-1):
         return intersection_superellipses(self, se, tol=tol)
 
     def intersection_x(self, x, tol=1e-3):

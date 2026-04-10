@@ -185,15 +185,16 @@ def visualize(
         ax.axhline(y, color=color, linewidth=0.5, linestyle="--", alpha=0.6)
         ax.text(fc.window_width + 10, y, label, fontsize=7, color=color, va="center")
 
-    # advance width
-    ax.axvline(0, color="#aaa", linewidth=0.5, linestyle=":")
-    ax.axvline(fc.window_width, color="#aaa", linewidth=0.5, linestyle=":")
+    # cell walls
+    ax.axvline(0, color="#555", linewidth=1.5, linestyle="-")
+    ax.axvline(fc.window_width, color="#555", linewidth=1.5, linestyle="-")
+    ax.axhline(fc.window_descent, color="#555", linewidth=1.5, linestyle="-")
+    ax.axhline(fc.window_ascent, color="#555", linewidth=1.5, linestyle="-")
 
     ax.set_xlim(-50, fc.window_width + 80)
-    ax.set_ylim(fc.descent - 50, fc.ascent + 50)
+    ax.set_ylim(fc.window_descent - 50, fc.window_ascent + 50)
     ax.set_aspect("equal")
     ax.set_title(f"'{glyph}'", fontsize=16)
-    ax.grid(True, alpha=0.15)
     plt.tight_layout()
     plt.show()
 

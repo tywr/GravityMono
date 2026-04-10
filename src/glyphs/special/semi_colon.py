@@ -1,5 +1,4 @@
 from glyphs import Glyph
-from glyphs.special.comma import CommaGlyph
 from draw.rect import draw_rect
 from draw.polygon import draw_polygon
 
@@ -13,6 +12,8 @@ class SemiColonGlyph(Glyph):
     gap = 1
 
     def draw(self, pen, dc):
+        from glyphs.special.comma import CommaGlyph
+
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )

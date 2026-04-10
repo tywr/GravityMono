@@ -1,6 +1,5 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from glyphs.special.full_stop import FullStopGlyph
 
 
 class ExclamationMarkGlyph(Glyph):
@@ -9,9 +8,11 @@ class ExclamationMarkGlyph(Glyph):
     offset = 0
     width_ratio = 1
     gap = 0.4
-    height_overflow = 0.2
+    height_overflow = 0.05
 
     def draw(self, pen, dc):
+        from glyphs.special.full_stop import FullStopGlyph
+
         b = dc.body_bounds(
             offset=self.offset, height="ascent", width_ratio=self.width_ratio
         )

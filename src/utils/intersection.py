@@ -102,7 +102,7 @@ def _bezier_bezier_intersect(seg_a, seg_b, tol=0.5, depth=0, max_depth=50):
     for sa in (a1, a2):
         for sb in (b1, b2):
             results.extend(_bezier_bezier_intersect(sa, sb, tol, depth + 1, max_depth))
-    return results
+    return _dedupe_points(results, tol=tol)
 
 
 def _dedupe_points(points, tol=1.0):
