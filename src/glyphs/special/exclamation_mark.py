@@ -7,14 +7,14 @@ class ExclamationMarkGlyph(Glyph):
     unicode = "0x21"
     offset = 0
     width_ratio = 1
-    gap = 0.4
-    height_overflow = 0.05
+    gap = 0.35
+    height_overflow = 0.15
 
     def draw(self, pen, dc):
         from glyphs.special.full_stop import FullStopGlyph
 
         b = dc.body_bounds(
-            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         g = self.gap * b.height
         dh = self.height_overflow * b.height
