@@ -1,12 +1,14 @@
 from math import tan
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
+
 from glyphs import Glyph
 from draw.superellipse_loop import draw_superellipse_loop
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 from draw.rect import draw_rect
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
+from utils.pens import NullPen
 
 
 class AmpersandGlyph(Glyph):
@@ -17,8 +19,8 @@ class AmpersandGlyph(Glyph):
     upper_width = 0.8
     upper_height = 0.4
     lower_width = 1
-    hook_ratio = 0.1
-    hook_below_baseline = 0.05
+    hook_ratio = 0.12
+    hook_below_baseline = 0.1
     end_height_ratio = 0.5
 
     def draw(self, pen, dc):
@@ -56,7 +58,7 @@ class AmpersandGlyph(Glyph):
         # Draw the parallelogramm to the bottom right
         dhy = self.hook_below_baseline * b.height
         theta, delta = draw_parallelogramm(
-            pen,
+            NullPen(),
             dc.stroke_x,
             dc.stroke_y,
             b.x2,
@@ -72,10 +74,13 @@ class AmpersandGlyph(Glyph):
         pen.curveTo(
             (xu1, 0.5 * yu1 + 0.5 * yu2 - hy),
             (xj, yj),
-            (xj, yj),
+            # (xj, yj),
+            (b.x2 - delta, b.y1 - dhy)
         )
-        pen.lineTo((xj + delta, yj))
+        # pen.lineTo((xj + delta, yj))
+        pen.lineTo((b.x2, b.y1 - dhy))
         pen.curveTo(
+            # (b.x2, b.y1 - dhy),
             (xj + delta, yj),
             (xu1 + dc.stroke_x, 0.5 * yu1 + 0.5 * yu2 - hy),
             (xu1 + dc.stroke_x, 0.5 * yu1 + 0.5 * yu2),
@@ -125,11 +130,12 @@ class AmpersandGlyph(Glyph):
         result.draw(pen)
 
         # Draw the height extension
+        eh = self.end_height_ratio * b.height
         draw_rect(
             pen,
             xbm + lw / 2 - dc.stroke_x,
             0.5 * b.y1 + 0.5 * yj,
             xbm + lw / 2,
-            400
+            eh
 
         )
