@@ -4,6 +4,9 @@ from draw.superellipse_loop import draw_superellipse_loop
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
+from draw.rect import draw_rect
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
 
 
 class AmpersandGlyph(Glyph):
@@ -13,8 +16,10 @@ class AmpersandGlyph(Glyph):
     width_ratio = 1.2
     upper_width = 0.8
     upper_height = 0.4
-    lower_height = 0.6
+    lower_width = 1
     hook_ratio = 0.1
+    hook_below_baseline = 0.05
+    end_height_ratio = 0.5
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -49,8 +54,16 @@ class AmpersandGlyph(Glyph):
         yj = min(y1, y2)
 
         # Draw the parallelogramm to the bottom right
+        dhy = self.hook_below_baseline * b.height
         theta, delta = draw_parallelogramm(
-            pen, dc.stroke_x, dc.stroke_y, b.x2, b.y1, xj, yj, direction="top-left"
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x2,
+            b.y1 - dhy,
+            xj,
+            yj,
+            direction="top-left",
         )
 
         # Draw the curve to the intersection
@@ -68,3 +81,55 @@ class AmpersandGlyph(Glyph):
             (xu1 + dc.stroke_x, 0.5 * yu1 + 0.5 * yu2),
         )
         pen.closePath()
+
+        # Draw the lower bowl
+        xbm = b.xmid
+        lw = self.lower_width * b.width
+        lh = yj - b.y1
+
+        draw_superellipse_arch(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            xbm - lw / 2,
+            b.y1,
+            xbm + lw / 2,
+            yj,
+            b.hx * lw / b.width,
+            b.hy * lh / b.height,
+            cut="top",
+            side="top",
+            taper=0.5,
+        )
+
+        loop_glyph = ufoLib2.objects.Glyph()
+        draw_superellipse_arch(
+            loop_glyph.getPen(),
+            dc.stroke_x,
+            dc.stroke_y,
+            xbm - lw / 2,
+            b.y1,
+            xbm + lw / 2,
+            yj,
+            b.hx * lw / b.width,
+            b.hy * lh / b.height,
+            cut="right",
+            side="top",
+            taper=0.5,
+        )
+
+        xcut = xj + delta
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(cut_glyph.getPen(), xcut, 0.5 * b.y1 + 0.5 * yj, b.x2, b.y2)
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
+
+        # Draw the height extension
+        draw_rect(
+            pen,
+            xbm + lw / 2 - dc.stroke_x,
+            0.5 * b.y1 + 0.5 * yj,
+            xbm + lw / 2,
+            400
+
+        )
