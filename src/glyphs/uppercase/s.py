@@ -14,8 +14,6 @@ class UppercaseSGlyph(UppercaseGlyph):
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_top=True,
-            overshoot_left=True,
-            overshoot_right=True,
             height="cap",
         )
         hx, hy = b.hx, b.hy * self.loop_ratio

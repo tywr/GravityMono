@@ -16,8 +16,6 @@ class LowercaseSGlyph(Glyph):
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_top=True,
-            overshoot_left=True,
-            overshoot_right=True,
             width_ratio=self.width_ratio,
         )
         hx, hy = b.hx, b.hy * self.loop_ratio
