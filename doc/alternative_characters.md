@@ -16,4 +16,5 @@
 | `cv09=1` | `x` | `U+0078` | ![lowercase_x](alternative_characters/lowercase_x.png) | ![lowercase_x_2](alternative_characters/lowercase_x_2.png) | `lowercase_x_2` |
 | `cv10=1` | `z` | `U+007A` | ![lowercase_z](alternative_characters/lowercase_z.png) | ![lowercase_z_2](alternative_characters/lowercase_z_2.png) | `lowercase_z_2` |
 | `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | `lowercase_f_2` |
+| `cv11=2` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |
