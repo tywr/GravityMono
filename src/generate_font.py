@@ -106,35 +106,51 @@ def skew_path(path, angle_deg):
     return skewed
 
 
-def select_italic_glyphs(all_glyphs):
-    """For each unicode, prefer the glyph with default_italic=True.
-
-    Returns (active_glyphs, italic_promoted_names) where italic_promoted_names
-    contains glyph names that were promoted to default for the italic variant
-    and should NOT be treated as alternates.
-    """
+def select_style_glyphs(all_glyphs, italic):
+    """Select one default and the applicable alternates for each style."""
+    defaults = {}
     by_unicode = {}
-    for g in all_glyphs:
-        if not g.unicode:
-            continue
-        code = int(g.unicode, 16)
-        existing = by_unicode.get(code)
-        if existing is None:
-            by_unicode[code] = g
-        elif g.default_italic and not existing.default_italic:
-            by_unicode[code] = g
-        elif g.default_italic and existing.default_italic:
-            by_unicode[code] = g  # last one wins
+    for glyph in all_glyphs:
+        if glyph.unicode:
+            by_unicode.setdefault(int(glyph.unicode, 16), []).append(glyph)
 
-    # Names promoted as the italic default (they go into cmap, not alternates)
-    promoted = {g.name for g in by_unicode.values()}
+    for code, glyphs_for_code in by_unicode.items():
+        candidates = [
+            glyph
+            for glyph in glyphs_for_code
+            if not glyph.font_feature
+            and not glyph.italic_only
+            and (glyph.default_italic if italic else not glyph.default_italic)
+        ]
+        if not candidates and italic:
+            candidates = [
+                glyph
+                for glyph in glyphs_for_code
+                if not glyph.font_feature
+                and not glyph.default_italic
+                and not glyph.italic_only
+            ]
+        if not candidates:
+            raise ValueError(
+                f"Expected one {'italic' if italic else 'regular'} default "
+                f"for U+{code:04X}, found none"
+            )
+        defaults[code] = candidates[-1]
 
-    # Build the final list: selected base glyphs + non-unicode glyphs (ligatures etc.)
-    result = list(by_unicode.values())
-    for g in all_glyphs:
-        if not g.unicode and g.name not in promoted:
-            result.append(g)
-    return result, promoted
+    active = list(defaults.values())
+    for glyph in all_glyphs:
+        if not glyph.unicode:
+            active.append(glyph)
+        elif glyph.font_feature:
+            code = int(glyph.unicode, 16)
+            has_italic_default = defaults[code].default_italic
+            if italic:
+                if glyph.italic_only or not has_italic_default:
+                    active.append(glyph)
+            elif not glyph.italic_only:
+                active.append(glyph)
+
+    return active, {glyph.name for glyph in defaults.values()}
 
 
 def _coverage(glyphs):
@@ -531,12 +547,7 @@ def build_font(
 
     all_glyphs = discover_glyphs()
 
-    # For italic, prefer glyphs with default_italic=True
-    if italic:
-        active_glyphs, promoted = select_italic_glyphs(all_glyphs)
-    else:
-        active_glyphs = all_glyphs
-        promoted = set()
+    active_glyphs, promoted = select_style_glyphs(all_glyphs, italic)
 
     cmap = {0x20: "space"}
     ligature_glyphs = []

@@ -8,7 +8,6 @@ from draw.rect import draw_rect
 
 class LowercaseX2Glyph(Glyph):
     name = "lowercase_x_2"
-    font_feature = {"cv09": 1}
     default_italic = True
     unicode = "0x78"
     offset = 0

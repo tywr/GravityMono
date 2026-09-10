@@ -4,7 +4,6 @@ from draw.arch import draw_arch
 
 
 class UppercaseOeGlyph(UppercaseGlyph):
-    # Placeholder: plots the same as uppercase 'A' for the moment.
     name = "uppercase_oe"
     unicode = "0x153"
     offset = 0

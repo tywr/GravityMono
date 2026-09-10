@@ -46,21 +46,22 @@ width: 348
 
 # --- Superellipse handles ---------------------------------------------------
 hx: 180
-hy: 180
+hy: 240
 cap_hx: 180
-cap_hy: 190
+cap_hy: 250
 
-# Corner taper (0..0.5).
-taper: 0.5
+# Corner taper (0..1).
+taper: 0.35
 
 # --- Stroke weights (regular / 400) -----------------------------------------
 # These are the base weights; --config keeps the multi-weight build, which
 # scales them per weight via DrawConfig.weight().
-default_stroke: 90
-stroke_x: 94
-stroke_y: 66
-stroke_alt: 60
+default_stroke: 84
+stroke_x: 84
+stroke_y: 70
+stroke_alt: 66
 
 # --- Overshoots -------------------------------------------------------------
-v_overshoot: 12
-h_overshoot: 11
+v_overshoot: 9
+v_overshoot_cap: 16
+h_overshoot: 10

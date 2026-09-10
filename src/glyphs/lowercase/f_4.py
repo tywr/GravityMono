@@ -3,13 +3,15 @@ from draw.smooth_corner import draw_smooth_corner
 from draw.rect import draw_rect
 
 
-class LowercaseF2Glyph(Glyph):
-    name = "lowercase_f_2"
+class LowercaseF4Glyph(Glyph):
+    name = "lowercase_f_4"
     unicode = "0x66"
-    default_italic = True
+    font_feature = {"cv11": 1}
+    italic_only = True
     offset = -22
     rl_ratio = 0.55
     width_ratio = 1.05
+    cross_bar_height = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -17,6 +19,7 @@ class LowercaseF2Glyph(Glyph):
         )
         right_len = b.width * self.rl_ratio - dc.stroke_x / 2
         left_len = b.width * (1 - self.rl_ratio) - dc.stroke_x / 2
+        yc = self.cross_bar_height * dc.x_height
 
         # Stem
         draw_rect(
@@ -30,9 +33,9 @@ class LowercaseF2Glyph(Glyph):
         draw_rect(
             pen,
             b.xmid - left_len - dc.stroke_x / 2,
-            dc.x_height - dc.stroke_y,
+            yc - dc.stroke_y,
             b.xmid + right_len + dc.stroke_x / 2,
-            dc.x_height,
+            yc,
         )
         # Corner
         draw_smooth_corner(
@@ -58,5 +61,5 @@ class LowercaseF2Glyph(Glyph):
             dc.descent,
             b.hx,
             b.hy,
-            orientation="bottom-left"
+            orientation="bottom-left",
         )

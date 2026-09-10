@@ -6,7 +6,6 @@ from glyphs.lowercase.dotted import DottedLowercaseGlyph
 class LowercaseI2Glyph(DottedLowercaseGlyph):
     name = "lowercase_i_2"
     unicode = "0x69"
-    font_feature = {"cv04": 1}
     default_italic = True
     offset = -24
     width_ratio = 1.08

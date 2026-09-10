@@ -7,7 +7,6 @@ from draw.corner import draw_corner
 
 class LowercaseK2Glyph(Glyph):
     name = "lowercase_k_2"
-    font_feature = {"cv05": 1}
     default_italic = True
     unicode = "0x6B"
     offset = 16

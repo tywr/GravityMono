@@ -9,7 +9,6 @@ from glyphs.lowercase.round import RoundLowercaseGlyph
 class LowercaseE2Glyph(RoundLowercaseGlyph):
     name = "lowercase_e_2"
     unicode = "0x65"
-    font_feature = {"cv07": 1}
     default_italic = True
     offset = 5
     width_ratio = 1

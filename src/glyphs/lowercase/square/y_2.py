@@ -10,7 +10,6 @@ from glyphs.lowercase.square import SquareLowercaseGlyph
 class LowercaseY2Glyph(SquareLowercaseGlyph):
     name = "lowercase_y_2"
     unicode = "0x79"
-    font_feature = {"cv02": 1}
     default_italic = True
     offset = 0
 

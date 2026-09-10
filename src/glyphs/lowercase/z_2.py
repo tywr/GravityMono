@@ -6,7 +6,6 @@ from draw.square_corner import draw_square_corner
 
 class LowercaseZ2Glyph(Glyph):
     name = "lowercase_z_2"
-    font_feature = {"cv10": 1}
     default_italic = True
     unicode = "0x7A"
     offset = 0

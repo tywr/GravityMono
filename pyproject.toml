@@ -18,6 +18,7 @@ dependencies = [
     "Pillow",
     "Pygments",
     "reportlab",
+    "PyYAML",
 ]
 
 [tool.pytest.ini_options]

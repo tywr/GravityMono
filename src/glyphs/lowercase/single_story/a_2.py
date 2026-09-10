@@ -6,7 +6,6 @@ from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 
 class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
     name = "lowercase_a_2"
-    font_feature = {"cv06": 1}
     default_italic = True
     unicode = "0x61"
     offset = -10

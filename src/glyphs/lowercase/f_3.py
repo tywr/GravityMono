@@ -6,7 +6,7 @@ from draw.rect import draw_rect
 class LowercaseF3Glyph(Glyph):
     name = "lowercase_f_3"
     unicode = "0x66"
-    font_feature = {"cv11": 2}
+    font_feature = {"cv11": 1}
     offset = -36
     rl_ratio = 0.59
     width_ratio = 1.04

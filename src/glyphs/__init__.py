@@ -20,6 +20,7 @@ class Glyph(ABC):
     number_characters: int = 1
     font_feature: dict = None
     default_italic: bool = False
+    italic_only: bool = False
 
     @abstractmethod
     def draw(self, pen, dc) -> None: ...

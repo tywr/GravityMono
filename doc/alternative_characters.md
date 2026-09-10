@@ -5,16 +5,7 @@
 | Feature | Character | Code point | Default | Alternative | Alternative glyph |
 | --- | --- | --- | --- | --- | --- |
 | `cv01=1` | `0` | `U+0030` | ![zero](alternative_characters/zero.png) | ![zero_slashed](alternative_characters/zero_slashed.png) | `zero_slashed` |
-| `cv02=1` | `y` | `U+0079` | ![lowercase_y](alternative_characters/lowercase_y.png) | ![lowercase_y_2](alternative_characters/lowercase_y_2.png) | `lowercase_y_2` |
 | `cv03=1` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) | `lowercase_l_2` |
-| `cv04=1` | `i` | `U+0069` | ![lowercase_i](alternative_characters/lowercase_i.png) | ![lowercase_i_2](alternative_characters/lowercase_i_2.png) | `lowercase_i_2` |
-| `cv05=1` | `k` | `U+006B` | ![lowercase_k](alternative_characters/lowercase_k.png) | ![lowercase_k_2](alternative_characters/lowercase_k_2.png) | `lowercase_k_2` |
-| `cv06=1` | `a` | `U+0061` | ![lowercase_a](alternative_characters/lowercase_a.png) | ![lowercase_a_2](alternative_characters/lowercase_a_2.png) | `lowercase_a_2` |
-| `cv07=1` | `e` | `U+0065` | ![lowercase_e](alternative_characters/lowercase_e.png) | ![lowercase_e_2](alternative_characters/lowercase_e_2.png) | `lowercase_e_2` |
-| `cv07=1` | `v` | `U+0076` | ![lowercase_v](alternative_characters/lowercase_v.png) | ![lowercase_v_2](alternative_characters/lowercase_v_2.png) | `lowercase_v_2` |
-| `cv08=1` | `w` | `U+0077` | ![lowercase_w](alternative_characters/lowercase_w.png) | ![lowercase_w_2](alternative_characters/lowercase_w_2.png) | `lowercase_w_2` |
-| `cv09=1` | `x` | `U+0078` | ![lowercase_x](alternative_characters/lowercase_x.png) | ![lowercase_x_2](alternative_characters/lowercase_x_2.png) | `lowercase_x_2` |
-| `cv10=1` | `z` | `U+007A` | ![lowercase_z](alternative_characters/lowercase_z.png) | ![lowercase_z_2](alternative_characters/lowercase_z_2.png) | `lowercase_z_2` |
-| `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | `lowercase_f_2` |
-| `cv11=2` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |
+| `cv11=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |
+| `cv11=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_4](alternative_characters/lowercase_f_4.png) | `lowercase_f_4` |
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |
